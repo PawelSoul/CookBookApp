@@ -1,25 +1,57 @@
-﻿namespace CookBookApp
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Maui.Controls;
+
+namespace CookBookApp
 {
     public partial class MainPage : ContentPage
     {
-        int count = 0;
-
         public MainPage()
         {
             InitializeComponent();
         }
 
-        private void OnCounterClicked(object sender, EventArgs e)
+        // Metoda wywoływana po zmianie stanu CheckBox
+        private void OnFilterChanged(object sender, EventArgs e)
         {
-            count++;
+            ApplyFilters();
+        }
 
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
-            else
-                CounterBtn.Text = $"Clicked {count} times";
+        // Logika filtrowania przepisów
+        private void ApplyFilters()
+        {
+            // Pobranie listy zaznaczonych filtrów (przykładowa implementacja)
+            var selectedFilters = new List<string>();
 
-            SemanticScreenReader.Announce(CounterBtn.Text);
+            foreach (var child in GetAllCheckBoxes(this))
+            {
+                if (child.IsChecked)
+                {
+                    selectedFilters.Add(child.AutomationId ?? "Nieznany Filtr");
+                }
+            }
+
+            // Tutaj można dodać logikę wyszukiwania na podstawie `selectedFilters`
+            Console.WriteLine("Zastosowane filtry: " + string.Join(", ", selectedFilters));
+        }
+
+        // Metoda pomocnicza do pobrania wszystkich CheckBox na stronie
+        private IEnumerable<CheckBox> GetAllCheckBoxes(VisualElement parent)
+        {
+            if (parent is CheckBox checkBox)
+                yield return checkBox;
+
+            if (parent is Layout layout)
+            {
+                foreach (var child in layout.Children)
+                {
+                    foreach (var cb in GetAllCheckBoxes((VisualElement)child))
+                    {
+                        yield return cb;
+                    }
+                }
+            }
         }
     }
-
 }
