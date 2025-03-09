@@ -73,6 +73,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Add_Recipe.xaml.cs">
+	    <DependentUpon>Add_Recipe.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
 	  <MauiXaml Update="Add_Recipe.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

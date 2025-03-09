@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CookBookApp.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Maui.Controls;
 
 namespace CookBookApp
 {
     public partial class MainPage : ContentPage
     {
-        public MainPage()
+        private readonly AppDbContext _dbContext;
+        public MainPage(AppDbContext dbContext)
         {
             InitializeComponent();
+            _dbContext = dbContext;
         }
 
         // Metoda wywoływana po zmianie stanu CheckBox
@@ -55,7 +59,7 @@ namespace CookBookApp
         }
         private async void OnAddRecipeClicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new AddRecipePage());
+            await Navigation.PushAsync(new Add_Recipe(_dbContext));
         }
     }
 }
