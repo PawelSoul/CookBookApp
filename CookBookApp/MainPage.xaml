@@ -3,248 +3,275 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CookBookApp.MainPage"
              BackgroundColor="#876B5F">
+    <ScrollView>
+        <Grid>
+            <!-- Pole z liczbą wyszukanych przepisów -->
+            <Frame 
+                CornerRadius="5"
+                BackgroundColor="White"
+                BorderColor="Black"
+                Padding="5"
+                Margin="50,140, 0, 0"
+                HasShadow="False"
+                WidthRequest="40"
+                HeightRequest="30"
+                HorizontalOptions="Start"
+                VerticalOptions="Start">
+                <Label 
+                    x:Name="ResultsCountLabel"
+                    Text="0"
+                    FontSize="15"
+                    FontAttributes="Bold"
+                    TextColor="Black"
+                    HorizontalTextAlignment="Center"
+                    VerticalTextAlignment="Center"/>
+            </Frame>
 
-    <VerticalStackLayout Padding="30,0" Spacing="25">
 
-        <!-- Ramka wyszukiwania przepisu na górze -->
-        <Frame
-        CornerRadius="15"
-        BackgroundColor="AntiqueWhite"
-        BorderColor="Black"
-        Padding="15"
-        Margin="0,30,0,0"
-        HasShadow="False"
-        HorizontalOptions="Center"
-        WidthRequest="800"
-        VerticalOptions="Start">
+            <VerticalStackLayout Padding="30,0" Spacing="25">
 
-            <Entry Placeholder="Wpisz nazwę przepisu..."
-            FontSize="20"
-            TextColor="Black"
-            PlaceholderColor="Black"
-            BackgroundColor="#E6B6A2"
-            HorizontalTextAlignment="Center"/>
+                <!-- Ramka wyszukiwania przepisu na górze -->
+                <Frame
+            CornerRadius="15"
+            BackgroundColor="AntiqueWhite"
+            BorderColor="Black"
+            Padding="15"
+            Margin="0,30,0,0"
+            HasShadow="False"
+            HorizontalOptions="Center"
+            WidthRequest="800"
+            VerticalOptions="Start">
 
-        </Frame>
-        
-        <!-- Lista filtrów -->
-        <Grid ColumnDefinitions="*,*,*,*,*" Padding="0,50,10,0">
-            
-            <!-- Kolumna 1 -->
-            <VerticalStackLayout Grid.Column="0">
-                <Frame BackgroundColor="#CCA290" CornerRadius="20" Padding="10" HasShadow="False" Margin="10">
-                    <Label Text="RODZAJ DANIA" 
-                    FontAttributes="Bold" 
-                    TextColor="White" 
-                    FontSize="24"
-                    HorizontalOptions="Center"/>
+                    <Entry Placeholder="Wpisz nazwę przepisu..."
+                FontSize="20"
+                TextColor="Black"
+                PlaceholderColor="Black"
+                BackgroundColor="#E6B6A2"
+                HorizontalTextAlignment="Center"/>
+
                 </Frame>
 
-                <HorizontalStackLayout Margin="10,0,0,0">
-                    <CheckBox IsChecked="False"/>
-                    <Label Text="Śniadania" TextColor="Black" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
+                <!-- Lista filtrów -->
+                <Grid ColumnDefinitions="*,*,*,*,*" Padding="0,50,10,0">
 
-                <HorizontalStackLayout Margin="10,0,0,0">
-                    <CheckBox IsChecked="False"/>
-                    <Label Text="Przystawki i przekąski" TextColor="Black" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
+                    <!-- Kolumna 1 -->
+                    <VerticalStackLayout Grid.Column="0">
+                        <Frame BackgroundColor="#CCA290" CornerRadius="20" Padding="10" HasShadow="False" Margin="10">
+                            <Label Text="RODZAJ DANIA" 
+                        FontAttributes="Bold" 
+                        TextColor="White" 
+                        FontSize="24"
+                        HorizontalOptions="Center"/>
+                        </Frame>
 
-                <HorizontalStackLayout Margin="10,0,0,0">
-                    <CheckBox IsChecked="False"/>
-                    <Label Text="Zupy" TextColor="Black" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
+                        <HorizontalStackLayout Margin="10,0,0,0">
+                            <CheckBox IsChecked="False"/>
+                            <Label Text="Śniadania" TextColor="Black" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
 
-                <HorizontalStackLayout Margin="10,0,0,0">
-                    <CheckBox IsChecked="False"/>
-                    <Label Text="Dania główne" TextColor="Black" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
+                        <HorizontalStackLayout Margin="10,0,0,0">
+                            <CheckBox IsChecked="False"/>
+                            <Label Text="Przystawki i przekąski" TextColor="Black" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
 
-                <HorizontalStackLayout Margin="10,0,0,0">
-                    <CheckBox IsChecked="False"/>
-                    <Label Text="Desery" TextColor="Black" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
+                        <HorizontalStackLayout Margin="10,0,0,0">
+                            <CheckBox IsChecked="False"/>
+                            <Label Text="Zupy" TextColor="Black" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
 
-                <HorizontalStackLayout Margin="10,0,0,0">
-                    <CheckBox IsChecked="False"/>
-                    <Label Text="Pieczywo i wypieki" TextColor="Black" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
+                        <HorizontalStackLayout Margin="10,0,0,0">
+                            <CheckBox IsChecked="False"/>
+                            <Label Text="Dania główne" TextColor="Black" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
 
-                <HorizontalStackLayout Margin="10,0,0,0">
-                    <CheckBox IsChecked="False"/>
-                    <Label Text="Napoje" TextColor="Black" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
+                        <HorizontalStackLayout Margin="10,0,0,0">
+                            <CheckBox IsChecked="False"/>
+                            <Label Text="Desery" TextColor="Black" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
 
-                <HorizontalStackLayout Margin="10,0,0,0">
-                    <CheckBox IsChecked="False"/>
-                    <Label Text="Sosy i dodatki" TextColor="Black" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
+                        <HorizontalStackLayout Margin="10,0,0,0">
+                            <CheckBox IsChecked="False"/>
+                            <Label Text="Pieczywo i wypieki" TextColor="Black" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
 
-            </VerticalStackLayout>
+                        <HorizontalStackLayout Margin="10,0,0,0">
+                            <CheckBox IsChecked="False"/>
+                            <Label Text="Napoje" TextColor="Black" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
 
-            <!-- Kolumna 2 -->
-            <VerticalStackLayout Grid.Column="1">
-                <Frame BackgroundColor="#CCA290" CornerRadius="20" Padding="10" HasShadow="False" Margin="10">
-                    <Label Text="KUCHNIA ŚWIATA" 
-                    FontAttributes="Bold" 
-                    TextColor="White" 
-                    FontSize="24"
-                    HorizontalOptions="Center"/>
+                        <HorizontalStackLayout Margin="10,0,0,0">
+                            <CheckBox IsChecked="False"/>
+                            <Label Text="Sosy i dodatki" TextColor="Black" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+
+                    </VerticalStackLayout>
+
+                    <!-- Kolumna 2 -->
+                    <VerticalStackLayout Grid.Column="1">
+                        <Frame BackgroundColor="#CCA290" CornerRadius="20" Padding="10" HasShadow="False" Margin="10">
+                            <Label Text="KUCHNIA ŚWIATA" 
+                        FontAttributes="Bold" 
+                        TextColor="White" 
+                        FontSize="24"
+                        HorizontalOptions="Center"/>
+                        </Frame>
+
+                        <HorizontalStackLayout  Margin="10,0,0,0">
+                            <CheckBox IsChecked="False"/>
+                            <Label Text="Polska" TextColor="Black" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout  Margin="10,0,0,0">
+                            <CheckBox IsChecked="False"/>
+                            <Label Text="Włoska" TextColor="Black" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout  Margin="10,0,0,0">
+                            <CheckBox IsChecked="False"/>
+                            <Label Text="Francuska" TextColor="Black" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout Margin="10,0,0,0">
+                            <CheckBox IsChecked="False"/>
+                            <Label Text="Azjatycka" TextColor="Black" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout Margin="10,0,0,0">
+                            <CheckBox IsChecked="False"/>
+                            <Label Text="Meksykańska" TextColor="Black" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout Margin="10,0,0,0">
+                            <CheckBox IsChecked="False"/>
+                            <Label Text="Śródziemnomorska" TextColor="Black" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+
+                    </VerticalStackLayout>
+
+                    <!-- Kolumna 3 -->
+                    <VerticalStackLayout Grid.Column="2">
+                        <Frame BackgroundColor="#CCA290" CornerRadius="20" Padding="10" HasShadow="False" Margin="10">
+                            <Label Text="GŁÓWNY SKŁADNIK" 
+                        FontAttributes="Bold" 
+                        TextColor="White" 
+                        FontSize="24"
+                        HorizontalOptions="Center"/>
+                        </Frame>
+
+                        <HorizontalStackLayout Margin="10,0,0,0">
+                            <CheckBox IsChecked="False"/>
+                            <Label Text="Śródziemnomorska" TextColor="Black" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout Margin="10,0,0,0">
+                            <CheckBox IsChecked="False"/>
+                            <Label Text="Rybne i owoce morza" TextColor="Black" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout Margin="10,0,0,0">
+                            <CheckBox IsChecked="False"/>
+                            <Label Text="Wegetariańskie" TextColor="Black" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout Margin="10,0,0,0">
+                            <CheckBox IsChecked="False"/>
+                            <Label Text="Wegańskie" TextColor="Black" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout Margin="10,0,0,0">
+                            <CheckBox IsChecked="False"/>
+                            <Label Text="Bezglutenowe" TextColor="Black" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+
+                    <!-- Kolumna 4 -->
+                    <VerticalStackLayout Grid.Column="3">
+                        <Frame BackgroundColor="#CCA290" CornerRadius="20" Padding="10" HasShadow="False" Margin="10">
+                            <Label Text="OKAZJA" 
+                        FontAttributes="Bold" 
+                        TextColor="White" 
+                        FontSize="24"
+                        HorizontalOptions="Center"/>
+                        </Frame>
+
+                        <HorizontalStackLayout Margin="10,0,0,0">
+                            <CheckBox IsChecked="False"/>
+                            <Label Text="Codzienne obiady" TextColor="Black" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout Margin="10,0,0,0">
+                            <CheckBox IsChecked="False"/>
+                            <Label Text="Świąteczne dania" TextColor="Black" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout Margin="10,0,0,0">
+                            <CheckBox IsChecked="False"/>
+                            <Label Text="Imprezowe przekąski" TextColor="Black" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout Margin="10,0,0,0">
+                            <CheckBox IsChecked="False"/>
+                            <Label Text="Grillowe specjały" TextColor="Black" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout Margin="10,0,0,0">
+                            <CheckBox IsChecked="False"/>
+                            <Label Text="Dania na wynos i do lunchboxa" TextColor="Black" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+
+                    </VerticalStackLayout>
+
+                    <!-- Kolumna 5 -->
+                    <VerticalStackLayout Grid.Column="4">
+                        <Frame BackgroundColor="#CCA290" CornerRadius="20" Padding="10" HasShadow="False" Margin="10">
+                            <Label Text="STOPIEŃ TRUDNOŚCI" 
+                   FontAttributes="Bold" 
+                   TextColor="White" 
+                   FontSize="24"
+                   HorizontalOptions="Center"/>
+                        </Frame>
+
+                        <HorizontalStackLayout Margin="10,0,0,0">
+                            <CheckBox IsChecked="False"/>
+                            <Label Text="Szybkie i łatwe" TextColor="Black" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout Margin="10,0,0,0">
+                            <CheckBox IsChecked="False"/>
+                            <Label Text="Średniozaawansowane" TextColor="Black" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout Margin="10,0,0,0">
+                            <CheckBox IsChecked="False"/>
+                            <Label Text="Zaawansowane" TextColor="Black" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+
+                    </VerticalStackLayout>
+
+                </Grid>
+
+                <!-- Przycisk do wyszukiwania na dole-->
+                <Frame
+            CornerRadius="20"
+            BackgroundColor="#CC7F50"
+            BorderColor="SaddleBrown"    
+            Padding="20"
+            HasShadow="False"
+            Margin="0,0,0,20"
+            HorizontalOptions="Center"
+            VerticalOptions="Center">
+                    <Label
+                Text="Wyszukaj Przepis"
+                FontSize="40"
+                FontAttributes="Bold"
+                TextColor="FloralWhite"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"/>
                 </Frame>
 
-                <HorizontalStackLayout  Margin="10,0,0,0">
-                    <CheckBox IsChecked="False"/>
-                    <Label Text="Polska" TextColor="Black" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-
-                <HorizontalStackLayout  Margin="10,0,0,0">
-                    <CheckBox IsChecked="False"/>
-                    <Label Text="Włoska" TextColor="Black" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-
-                <HorizontalStackLayout  Margin="10,0,0,0">
-                    <CheckBox IsChecked="False"/>
-                    <Label Text="Francuska" TextColor="Black" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-
-                <HorizontalStackLayout Margin="10,0,0,0">
-                    <CheckBox IsChecked="False"/>
-                    <Label Text="Azjatycka" TextColor="Black" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-
-                <HorizontalStackLayout Margin="10,0,0,0">
-                    <CheckBox IsChecked="False"/>
-                    <Label Text="Meksykańska" TextColor="Black" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-
-                <HorizontalStackLayout Margin="10,0,0,0">
-                    <CheckBox IsChecked="False"/>
-                    <Label Text="Śródziemnomorska" TextColor="Black" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-
-            </VerticalStackLayout>
-
-            <!-- Kolumna 3 -->
-            <VerticalStackLayout Grid.Column="2">
-                <Frame BackgroundColor="#CCA290" CornerRadius="20" Padding="10" HasShadow="False" Margin="10">
-                    <Label Text="GŁÓWNY SKŁADNIK" 
-                    FontAttributes="Bold" 
-                    TextColor="White" 
-                    FontSize="24"
-                    HorizontalOptions="Center"/>        
-                </Frame>
-
-                <HorizontalStackLayout Margin="10,0,0,0">
-                    <CheckBox IsChecked="False"/>
-                    <Label Text="Śródziemnomorska" TextColor="Black" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-
-                <HorizontalStackLayout Margin="10,0,0,0">
-                    <CheckBox IsChecked="False"/>
-                    <Label Text="Rybne i owoce morza" TextColor="Black" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-
-                <HorizontalStackLayout Margin="10,0,0,0">
-                    <CheckBox IsChecked="False"/>
-                    <Label Text="Wegetariańskie" TextColor="Black" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-
-                <HorizontalStackLayout Margin="10,0,0,0">
-                    <CheckBox IsChecked="False"/>
-                    <Label Text="Wegańskie" TextColor="Black" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-
-                <HorizontalStackLayout Margin="10,0,0,0">
-                    <CheckBox IsChecked="False"/>
-                    <Label Text="Bezglutenowe" TextColor="Black" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-            </VerticalStackLayout>
-
-            <!-- Kolumna 4 -->
-            <VerticalStackLayout Grid.Column="3">
-                <Frame BackgroundColor="#CCA290" CornerRadius="20" Padding="10" HasShadow="False" Margin="10">
-                    <Label Text="OKAZJA" 
-                    FontAttributes="Bold" 
-                    TextColor="White" 
-                    FontSize="24"
-                    HorizontalOptions="Center"/>
-                </Frame>
-
-                <HorizontalStackLayout Margin="10,0,0,0">
-                    <CheckBox IsChecked="False"/>
-                    <Label Text="Codzienne obiady" TextColor="Black" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-
-                <HorizontalStackLayout Margin="10,0,0,0">
-                    <CheckBox IsChecked="False"/>
-                    <Label Text="Świąteczne dania" TextColor="Black" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-
-                <HorizontalStackLayout Margin="10,0,0,0">
-                    <CheckBox IsChecked="False"/>
-                    <Label Text="Imprezowe przekąski" TextColor="Black" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-
-                <HorizontalStackLayout Margin="10,0,0,0">
-                    <CheckBox IsChecked="False"/>
-                    <Label Text="Grillowe specjały" TextColor="Black" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-
-                <HorizontalStackLayout Margin="10,0,0,0">
-                    <CheckBox IsChecked="False"/>
-                    <Label Text="Dania na wynos i do lunchboxa" TextColor="Black" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-                
-            </VerticalStackLayout>
-
-            <!-- Kolumna 5 -->
-            <VerticalStackLayout Grid.Column="4">
-                <Frame BackgroundColor="#CCA290" CornerRadius="20" Padding="10" HasShadow="False" Margin="10">
-                    <Label Text="STOPIEŃ TRUDNOŚCI" 
-               FontAttributes="Bold" 
-               TextColor="White" 
-               FontSize="24"
-               HorizontalOptions="Center"/>
-                </Frame>
-
-                <HorizontalStackLayout Margin="10,0,0,0">
-                    <CheckBox IsChecked="False"/>
-                    <Label Text="Szybkie i łatwe" TextColor="Black" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-
-                <HorizontalStackLayout Margin="10,0,0,0">
-                    <CheckBox IsChecked="False"/>
-                    <Label Text="Średniozaawansowane" TextColor="Black" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-
-                <HorizontalStackLayout Margin="10,0,0,0">
-                    <CheckBox IsChecked="False"/>
-                    <Label Text="Zaawansowane" TextColor="Black" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-                
             </VerticalStackLayout>
 
         </Grid>
-            
-        <!-- Przycisk do wyszukiwania na dole-->
-        <Frame
-        CornerRadius="20"
-        BackgroundColor="#CC7F50"
-        BorderColor="SaddleBrown"    
-        Padding="20"
-        HasShadow="False"
-        Margin="0,0,0,20"
-        HorizontalOptions="Center"
-        VerticalOptions="Center">
-            <Label
-            Text="Wyszukaj Przepis"
-            FontSize="40"
-            FontAttributes="Bold"
-            TextColor="FloralWhite"
-            HorizontalOptions="Center"
-            VerticalOptions="Center"/>
-        </Frame>
-
-    </VerticalStackLayout>
+    </ScrollView>
 
 </ContentPage>
