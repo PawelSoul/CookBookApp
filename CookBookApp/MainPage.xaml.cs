@@ -53,5 +53,9 @@ namespace CookBookApp
                 }
             }
         }
+        private async void OnAddRecipeClicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new Add_Recipe());
+        }
     }
 }

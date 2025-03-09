@@ -11,7 +11,7 @@
                 BackgroundColor="White"
                 BorderColor="Black"
                 Padding="5"
-                Margin="50,140, 0, 0"
+                Margin="50,150, 0, 0"
                 HasShadow="False"
                 WidthRequest="40"
                 HeightRequest="30"
@@ -27,27 +27,58 @@
                     VerticalTextAlignment="Center"/>
             </Frame>
 
-
+            <!-- Przyciski -->
+            <Grid>
+                <!-- Przycisk do wyszukiwania na dole-->
+                <Button 
+                Text="Wyszukaj Przepis"
+                FontSize="15"
+                BackgroundColor="#A85400"
+                TextColor="White"
+                CornerRadius="5"
+                Padding="5"
+                Margin="50,50,0,0"
+                WidthRequest="140"
+                HeightRequest="30"
+                HorizontalOptions="Start"
+                VerticalOptions="Start"/>
+                
+                <!-- Przycisk "Dodaj Przepis" w lewym górnym rogu -->
+                <Button 
+                    Text="Dodaj Przepis"
+                    FontSize="15"
+                    BackgroundColor="#A85400"
+                    TextColor="White"
+                    CornerRadius="5"
+                    Padding="5"
+                    Margin="50,100,0,0"
+                    WidthRequest="140"
+                    HeightRequest="30"
+                    HorizontalOptions="Start"
+                    VerticalOptions="Start"
+                    Clicked="OnAddRecipeClicked"/>
+            </Grid>
+        
             <VerticalStackLayout Padding="30,0" Spacing="25">
 
-                <!-- Ramka wyszukiwania przepisu na górze -->
+                <!-- Wyszukiwarka przepisu -->
                 <Frame
-            CornerRadius="15"
-            BackgroundColor="AntiqueWhite"
-            BorderColor="Black"
-            Padding="15"
-            Margin="0,30,0,0"
-            HasShadow="False"
-            HorizontalOptions="Center"
-            WidthRequest="800"
-            VerticalOptions="Start">
+                CornerRadius="15"
+                BackgroundColor="AntiqueWhite"
+                BorderColor="Black"
+                Padding="15"
+                Margin="0,30,0,0"
+                HasShadow="False"
+                HorizontalOptions="Center"
+                WidthRequest="800"
+                VerticalOptions="Start">
 
                     <Entry Placeholder="Wpisz nazwę przepisu..."
-                FontSize="20"
-                TextColor="Black"
-                PlaceholderColor="Black"
-                BackgroundColor="#E6B6A2"
-                HorizontalTextAlignment="Center"/>
+                    FontSize="20"
+                    TextColor="Black"
+                    PlaceholderColor="Black"
+                    BackgroundColor="#E6B6A2"
+                    HorizontalTextAlignment="Center"/>  
 
                 </Frame>
 
@@ -58,10 +89,10 @@
                     <VerticalStackLayout Grid.Column="0">
                         <Frame BackgroundColor="#CCA290" CornerRadius="20" Padding="10" HasShadow="False" Margin="10">
                             <Label Text="RODZAJ DANIA" 
-                        FontAttributes="Bold" 
-                        TextColor="White" 
-                        FontSize="24"
-                        HorizontalOptions="Center"/>
+                            FontAttributes="Bold" 
+                            TextColor="White" 
+                            FontSize="24"
+                            HorizontalOptions="Center"/>
                         </Frame>
 
                         <HorizontalStackLayout Margin="10,0,0,0">
@@ -249,26 +280,6 @@
                     </VerticalStackLayout>
 
                 </Grid>
-
-                <!-- Przycisk do wyszukiwania na dole-->
-                <Frame
-            CornerRadius="20"
-            BackgroundColor="#CC7F50"
-            BorderColor="SaddleBrown"    
-            Padding="20"
-            HasShadow="False"
-            Margin="0,0,0,20"
-            HorizontalOptions="Center"
-            VerticalOptions="Center">
-                    <Label
-                Text="Wyszukaj Przepis"
-                FontSize="40"
-                FontAttributes="Bold"
-                TextColor="FloralWhite"
-                HorizontalOptions="Center"
-                VerticalOptions="Center"/>
-                </Frame>
-
             </VerticalStackLayout>
 
         </Grid>
