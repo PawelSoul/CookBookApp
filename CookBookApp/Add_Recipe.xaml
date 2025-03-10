@@ -9,21 +9,28 @@
 
             <!-- Nazwa -->
             <Label Text="Nazwa przepisu:" FontSize="18" FontAttributes="Bold"/>
-            <Entry x:Name="RecipeNameEntry" Placeholder="Wpisz nazwę przepisu" FontAttributes="Italic" MaxLength="200"/>
-            
+            <Entry x:Name="RecipeNameEntry" Placeholder="Wpisz nazwę przepisu" FontAttributes="Italic" MaxLength="200" BackgroundColor="#3B3533" PlaceholderColor="White"/>
+
             <!-- Składniki -->
             <Label Text="Składniki:" FontSize="18" FontAttributes="Bold"/>
-            <Editor x:Name="IngredientsEditor" Placeholder="Wpisz składniki" FontAttributes="Italic" MaxLength="200"/>
-            
+            <VerticalStackLayout x:Name="IngredientsList">
+                <Entry Placeholder="Dodaj składnik" FontAttributes="Italic" MaxLength="200" BackgroundColor="#3B3533" PlaceholderColor="White"/>
+            </VerticalStackLayout>
+            <Button x:Name="AddIngredientsButton" Text="+" Clicked="OnAddIngredientClicked" FontSize="24" TextColor="White" BackgroundColor="#3B3533" BorderColor="White" BorderWidth="1" HeightRequest="44"/>
+
             <!-- Sposób przygotowania-->
             <Label Text="Sposób przygotowania:" FontSize="18" FontAttributes="Bold"/>
-            <Editor x:Name="StepsEditor" Placeholder="Pierwszy krok ..." HeightRequest="150" FontAttributes="Italic"/>
+            
+            <VerticalStackLayout x:Name="StepsList">
+                <Entry Placeholder="Dodaj krok ..." FontAttributes="Italic" MaxLength="200" BackgroundColor="#3B3533" PlaceholderColor="White"/>
+            </VerticalStackLayout>
+
+            <Button x:Name="AddStepButton" Text="+" Clicked="OnAddStepsClicked" FontSize="24" TextColor="White" BackgroundColor="#3B3533" BorderColor="White" BorderWidth="1" HeightRequest="44"/>
 
             <!-- Zdjęcia -->
             <Label Text="Zdjęcia:" FontSize="18" FontAttributes="Bold"/>
-
             <Button Text="Dodaj zdjęcie" Clicked="OnAddImageClicked" TextColor="White" BackgroundColor="#8A543D" BorderColor="White" BorderWidth="1"/>
-            
+
             <CollectionView x:Name="ImagesCollectionView" ItemsSource="{Binding Images}" HeightRequest="100" BackgroundColor="#1F1C0C">
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Orientation="Horizontal" Span="2"/>
