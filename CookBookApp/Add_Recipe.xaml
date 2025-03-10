@@ -13,19 +13,47 @@
 
             <!-- Składniki -->
             <Label Text="Składniki:" FontSize="18" FontAttributes="Bold"/>
-            <VerticalStackLayout x:Name="IngredientsList">
-                <Entry Placeholder="Dodaj składnik" FontAttributes="Italic" MaxLength="200" BackgroundColor="#3B3533" PlaceholderColor="White"/>
+
+            <VerticalStackLayout x:Name="IngredientsList" Spacing="5">
+                
+                <HorizontalStackLayout x:Name="FirstIngredientRow" Spacing="5">
+                    
+                    <Button Text="-" FontSize="20" TextColor="White" BackgroundColor="Red"
+                    WidthRequest="40" HeightRequest="40" Clicked="OnRemoveIngredientClicked"/>
+                    
+                    <Entry x:Name="FirstIngredientEntry" Placeholder="Dodaj składnik" FontAttributes="Italic"
+                    MaxLength="200" BackgroundColor="#3B3533" PlaceholderColor="White" WidthRequest="400"/>
+                    
+                    <Entry x:Name="FirstIngredientAmount" Placeholder="g" Keyboard="Numeric"
+                    BackgroundColor="#3B3533" PlaceholderColor="White" WidthRequest="80" FontAttributes="Italic"/>
+                    
+                </HorizontalStackLayout>
+                
             </VerticalStackLayout>
+
             <Button x:Name="AddIngredientsButton" Text="+" Clicked="OnAddIngredientClicked" FontSize="24" TextColor="White" BackgroundColor="#3B3533" BorderColor="White" BorderWidth="1" HeightRequest="44"/>
 
-            <!-- Sposób przygotowania-->
+            <!-- Sposób przygotowania -->
             <Label Text="Sposób przygotowania:" FontSize="18" FontAttributes="Bold"/>
-            
-            <VerticalStackLayout x:Name="StepsList">
-                <Entry Placeholder="Dodaj krok ..." FontAttributes="Italic" MaxLength="200" BackgroundColor="#3B3533" PlaceholderColor="White"/>
+
+            <VerticalStackLayout x:Name="StepsList" Spacing="5">
+ 
+                <HorizontalStackLayout x:Name="FirstStepRow" Spacing="5">
+                    
+                    <Button Text="-" FontSize="20" TextColor="White" BackgroundColor="Red"
+                     WidthRequest="40" HeightRequest="40" Clicked="OnRemoveStepClicked"/>
+                    
+                    <Entry x:Name="FirstStepEntry" Placeholder="Dodaj krok ..." FontAttributes="Italic"
+                     MaxLength="200" BackgroundColor="#3B3533" PlaceholderColor="White" WidthRequest="400"/>
+                    
+                    <Entry x:Name="FirstStepTime" Placeholder="min" Keyboard="Numeric"
+                     BackgroundColor="#3B3533" PlaceholderColor="White" WidthRequest="80" FontAttributes="Italic"/>
+                    
+                </HorizontalStackLayout>
             </VerticalStackLayout>
 
             <Button x:Name="AddStepButton" Text="+" Clicked="OnAddStepsClicked" FontSize="24" TextColor="White" BackgroundColor="#3B3533" BorderColor="White" BorderWidth="1" HeightRequest="44"/>
+
 
             <!-- Zdjęcia -->
             <Label Text="Zdjęcia:" FontSize="18" FontAttributes="Bold"/>

@@ -17,8 +17,8 @@ namespace CookBookApp.Models
         [Column(TypeName = "nvarchar(max)")]
         public Dictionary<string, double> Ingredients { get; set; } = new Dictionary<string, double>();
 
-        // Instrukcje jako lista stringów (kolejne kroki przepisu)
+        // Składniki jako słownik (nazwa kroku -> ilość czasu)
         [Column(TypeName = "nvarchar(max)")]
-        public List<string> Instructions { get; set; } = new List<string>();
+        public Dictionary<string, double?> InstructionSteps { get; set; } = new Dictionary<string, double?>();
     }
 }

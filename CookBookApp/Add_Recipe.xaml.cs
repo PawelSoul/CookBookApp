@@ -83,7 +83,7 @@ namespace CookBookApp
             //{
             //    RecipeName = recipeName,
             //    Ingredients = ingredientsDict,
-            //    Instructions = instructionsList
+            //    InstructionSteps = instructionsList
             //};
 
             //try
@@ -102,48 +102,111 @@ namespace CookBookApp
 
         private void OnAddIngredientClicked(object sender, EventArgs e)
         {
-
-            // Pobranie ostatniego pola Entry z listy sk³adników
-            if (IngredientsList.Children.LastOrDefault() is Entry lastEntry)
-            {
-                string ingredientText = lastEntry.Text?.Trim();
-                if (!string.IsNullOrEmpty(ingredientText))
-                {
-                    listIngredients.Add(ingredientText); // Dodanie sk³adnika do listy
-
-                    AddNewEntry("Dodaj sk³adnik ...");
-                }
-            }
+            AddIngredientEntry("Dodaj sk³adnik", "g");
         }
+
         private void OnAddStepsClicked(object sender, EventArgs e)
         {
-
-            // Pobranie ostatniego pola Entry z listy sk³adników
-            if (IngredientsList.Children.LastOrDefault() is Entry lastEntry)
-            {
-                string ingredientText = lastEntry.Text?.Trim();
-                if (!string.IsNullOrEmpty(ingredientText))
-                {
-                    stepsList.Add(ingredientText); // Dodanie sk³adnika do listy
-
-                    AddNewEntry("Dodaj krok ...");
-                }
-            }
+            AddStepEntry("Dodaj krok ...", "min");
         }
 
-        private void AddNewEntry(string placeHolder)
+        // Funkcja do dodawania nowego sk³adnika z gramatur¹
+        private void AddIngredientEntry(string placeholder, string unit)
         {
-            // Dodanie nowego pola do wpisania sk³adnika
-            var newIngredientEntry = new Entry
+            var layout = new HorizontalStackLayout { Spacing = 5 };
+
+            var removeButton = new Button
             {
-                Placeholder = placeHolder,
+                Text = "-",
+                FontSize = 20,
+                TextColor = Colors.White,
+                BackgroundColor = Colors.Red,
+                WidthRequest = 40,
+                HeightRequest = 40
+            };
+
+            var ingredientEntry = new Entry
+            {
+                Placeholder = placeholder,
                 FontAttributes = FontAttributes.Italic,
                 MaxLength = 200,
                 BackgroundColor = Color.FromHex("#3B3533"),
-                PlaceholderColor = Colors.White
+                PlaceholderColor = Colors.White,
+                WidthRequest = 400
             };
 
-            IngredientsList.Children.Add(newIngredientEntry);
+            var amountEntry = new Entry
+            {
+                Placeholder = unit,
+                Keyboard = Keyboard.Numeric,
+                BackgroundColor = Color.FromHex("#3B3533"),
+                PlaceholderColor = Colors.White,
+                WidthRequest = 80
+            };
+
+            removeButton.Clicked += (s, e) => IngredientsList.Children.Remove(layout);
+
+            layout.Children.Add(removeButton);
+            layout.Children.Add(ingredientEntry);
+            layout.Children.Add(amountEntry);
+
+            IngredientsList.Children.Add(layout);
         }
+
+        // Funkcja do dodawania nowego kroku z czasem wykonania
+        private void AddStepEntry(string placeholder, string unit)
+        {
+            var layout = new HorizontalStackLayout { Spacing = 5 };
+
+            var removeButton = new Button
+            {
+                Text = "-",
+                FontSize = 20,
+                TextColor = Colors.White,
+                BackgroundColor = Colors.Red,
+                WidthRequest = 40,
+                HeightRequest = 40
+            };
+
+            var stepEntry = new Entry
+            {
+                Placeholder = placeholder,
+                FontAttributes = FontAttributes.Italic,
+                MaxLength = 200,
+                BackgroundColor = Color.FromHex("#3B3533"),
+                PlaceholderColor = Colors.White,
+                WidthRequest = 400
+            };
+
+            var timeEntry = new Entry
+            {
+                Placeholder = unit,
+                Keyboard = Keyboard.Numeric,
+                BackgroundColor = Color.FromHex("#3B3533"),
+                PlaceholderColor = Colors.White,
+                WidthRequest = 80
+            };
+
+            removeButton.Clicked += (s, e) => StepsList.Children.Remove(layout);
+
+            layout.Children.Add(removeButton);
+            layout.Children.Add(stepEntry);
+            layout.Children.Add(timeEntry);
+
+            StepsList.Children.Add(layout);
+        }
+
+        // Usuwanie pierwszego sk³adnika
+        private void OnRemoveIngredientClicked(object sender, EventArgs e)
+        {
+            FirstIngredientRow.IsVisible = false;
+        }
+
+        // Usuwanie pierwszego kroku
+        private void OnRemoveStepClicked(object sender, EventArgs e)
+        {
+            FirstStepRow.IsVisible = false;
+        }
+
     }
 }
