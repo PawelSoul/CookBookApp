@@ -20,27 +20,27 @@
 
                 <HorizontalStackLayout Grid.Row="0" Grid.Column="0" Spacing="10">
                     <Button
+                    Text="Dodaj Nowy Przepis"
+                    FontSize="15"
+                    BackgroundColor="#A85400"
+                    TextColor="White"
+                    CornerRadius="5"
+                    WidthRequest="180"
+                    HeightRequest="40"
+                    BorderColor="Black"
+                    BorderWidth="2"
+                    Clicked="OnAddRecipeClicked"/>
+
+                    <Button
                     Text="Wyszukaj Przepis"
                     FontSize="15"
                     BackgroundColor="#A85400"
                     TextColor="White"
                     CornerRadius="5"
-                    WidthRequest="140"
+                    WidthRequest="170"
                     HeightRequest="40"
                     BorderColor="Black"
                     BorderWidth="2"/>
-
-                    <Button
-                    Text="Dodaj Przepis"
-                    FontSize="15"
-                    BackgroundColor="#A85400"
-                    TextColor="White"
-                    CornerRadius="5"
-                    WidthRequest="140"
-                    HeightRequest="40"
-                    BorderColor="Black"
-                    BorderWidth="2"
-                    Clicked="OnAddRecipeClicked"/>
                 </HorizontalStackLayout>
             </Frame>
 
@@ -87,7 +87,7 @@
             <Grid Grid.Row="2" Grid.ColumnSpan="2"
                   ColumnDefinitions="*,*,*,*,*"
                   Padding="10">
-
+            
                 <!-- Kolumna 1 -->
                 <VerticalStackLayout Grid.Column="0">
                     <Frame BackgroundColor="#CCA290" CornerRadius="20" Padding="10" HasShadow="False" Margin="10">
