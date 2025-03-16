@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using CookBookApp.Data;
+using CookBookApp.Repositories;
+using CookBookApp.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Maui.Controls;
 
@@ -9,11 +11,11 @@ namespace CookBookApp
 {
     public partial class MainPage : ContentPage
     {
-        private readonly AppDbContext _dbContext;
-        public MainPage(AppDbContext dbContext)
+        private readonly IBaseRepository _IBaseRepository;
+        public MainPage(IBaseRepository recipeRepository)
         {
             InitializeComponent();
-            _dbContext = dbContext;
+            _IBaseRepository = recipeRepository;
         }
 
         // Metoda wywoływana po zmianie stanu CheckBox
@@ -59,7 +61,28 @@ namespace CookBookApp
         }
         private async void OnAddRecipeClicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new Add_Recipe(_dbContext));
+            await Navigation.PushAsync(new Add_Recipe(_IBaseRepository));
+        }
+        private async void OnSearchRecipeClicked(object sender, EventArgs e)
+        {
+            string recipeName = RecipeNameEntry.Text;
+            if (string.IsNullOrWhiteSpace(recipeName))
+            {
+                await DisplayAlert("Błąd", "Wpisz nazwę przepisu do wyszukania.", "OK");
+                return;
+            }
+
+            var foundRecipes = await _IBaseRepository.FindRecipes(recipeName);
+
+            if (foundRecipes.Any())
+            {
+                string result = string.Join("\n", foundRecipes.Select(r => r.RecipeName));
+                await DisplayAlert("Znalezione przepisy", result, "OK");
+            }
+            else
+            {
+                await DisplayAlert("Brak wyników", "Nie znaleziono przepisu o podanej nazwie.", "OK");
+            }
         }
     }
 }

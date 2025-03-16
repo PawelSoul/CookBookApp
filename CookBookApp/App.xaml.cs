@@ -1,16 +1,19 @@
 ﻿using CookBookApp.Data;
+using CookBookApp.Repositories.Interfaces;
 
 namespace CookBookApp
 {
     public partial class App : Application
     {
-        private readonly AppDbContext _dbContext; // Pole na DbContext
-        public App(AppDbContext dbContext)
+
+        private readonly IBaseRepository _iBaseRepository;
+
+        public App(IBaseRepository recipeRepository)
         {
             InitializeComponent();
-            _dbContext = dbContext;
+            _iBaseRepository = recipeRepository;
 
-            MainPage = new NavigationPage(new MainPage(_dbContext)); // Włączamy nawigację
+            MainPage = new NavigationPage(new MainPage(_iBaseRepository)); // Włączamy nawigację
         }
     }
 }

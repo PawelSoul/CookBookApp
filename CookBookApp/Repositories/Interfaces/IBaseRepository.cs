@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CookBookApp.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace CookBookApp.Repositories.Interfaces
 {
-    internal interface IBaseRepository
+    public interface IBaseRepository
     {
+        Task<List<Recipe>> FindRecipes(string name);
     }
 }

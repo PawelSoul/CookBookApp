@@ -7,22 +7,23 @@ using Microsoft.Maui.Storage;
 using CookBookApp.Models;
 using CookBookApp.Data;
 using Microsoft.EntityFrameworkCore;
+using CookBookApp.Repositories.Interfaces;
 
 namespace CookBookApp
 {
     public partial class Add_Recipe : ContentPage
     {
         public ObservableCollection<string> Images { get; set; } = new ObservableCollection<string>();
-        private readonly AppDbContext _dbContext; // Pole na DbContext
 
         private List<string> listIngredients = new List<string>();
         private List<string> stepsList = new List<string>();
+        IBaseRepository _baseRepository;
 
-        public Add_Recipe(AppDbContext dbContext)// Konstruktor, który dostaje DbContext z DI
+        public Add_Recipe(IBaseRepository baseRepository)// Konstruktor, który dostaje DbContext z DI
         {
             InitializeComponent();
             ImagesCollectionView.ItemsSource = Images;
-            _dbContext = dbContext;
+            _baseRepository = baseRepository;
         }
 
         private async void OnAddImageClicked(object sender, EventArgs e)
@@ -82,7 +83,7 @@ namespace CookBookApp
             //var recipe = new Recipe
             //{
             //    RecipeName = recipeName,
-            //    Ingredients = ingredientsDict,
+            //    Authors = ingredientsDict,
             //    InstructionSteps = instructionsList
             //};
 
@@ -207,6 +208,7 @@ namespace CookBookApp
         {
             FirstStepRow.IsVisible = false;
         }
+        
 
     }
 }

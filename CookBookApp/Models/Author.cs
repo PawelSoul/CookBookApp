@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CookBookApp.Models
 {
-    internal class Ingredients
+    public class Author
     {
         [Key]
         public int Id { get; set; }

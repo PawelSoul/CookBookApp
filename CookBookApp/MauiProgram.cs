@@ -1,6 +1,10 @@
 ﻿using CookBookApp.Data;
+using CookBookApp.Repositories;
+using CookBookApp.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System.Reflection;
 
 namespace CookBookApp
 {
@@ -17,11 +21,20 @@ namespace CookBookApp
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-            // Pobranie connection stringa (możesz wczytać z konfiguracji zamiast hardcodować)
-            string connectionString = "Server=tcp:yourserver.database.windows.net,1433;Initial Catalog=CookBookDB;Persist Security Info=False;User ID=etoe_pawel;Password=Gwiazda100;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            // 📌 Wczytaj konfigurację z pliku appsettings.json
+            var config = new ConfigurationBuilder()
+                .AddJsonFile(Path.Combine(AppContext.BaseDirectory, "appsettings.json"), optional: false, reloadOnChange: true)
+                .Build();
 
-            // Dodanie DbContext do DI
-            builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
+            // Pobierz connection string z pliku
+            string connectionString = config.GetConnectionString("DefaultConnection");
+
+            // 🔹 Rejestracja DbContext w DI
+            builder.Services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlServer(connectionString));
+
+            // 🔹 Rejestracja repozytorium w DI
+            builder.Services.AddScoped<IBaseRepository, baseRepository>();
 
 #if DEBUG
             builder.Logging.AddDebug();

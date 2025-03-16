@@ -7,9 +7,10 @@ namespace CookBookApp.Data
 {
     public class AppDbContext : DbContext
     {
-        private readonly string _connectionString = "Server=tcp:etoe-database-server.database.windows.net,1433;Initial Catalog=etoe-database;Persist Security Info=False;User ID=etoe_pawel;Password=Gwiazda100;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Authentication=\"Active Directory Password";
+        private readonly string _connectionString = "Server=tcp:etoe-database-server.database.windows.net,1433;Initial Catalog=etoe-database;Persist Security Info=False;User ID=etoe_pawel;Password=Gwiazda100;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Authentication=Active Directory Password";
 
         public DbSet<Recipe> Recipes { get; set; }
+        public DbSet<Author> Authors { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -28,14 +29,14 @@ namespace CookBookApp.Data
             //Zamienia biblioteke Dictionary<string, double> na string lub na odwrót
             var ConvertDictionaryString = new ValueConverter<Dictionary<string, double>, string>(
                 v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
-                v => JsonSerializer.Deserialize<Dictionary<string, double>>(v, (JsonSerializerOptions)null)
+                v => JsonSerializer.Deserialize<Dictionary<string, double>>(v, (JsonSerializerOptions)null) ?? new Dictionary<string, double>()
             );
             //Zamienia biblioteke List<string> na string lub na odwrót
             var ConvertListString = new ValueConverter<List<string>, string>(
                 v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
-                v => JsonSerializer.Deserialize<List<string>>(v, (JsonSerializerOptions)null)
+                v => JsonSerializer.Deserialize<List<string>>(v, (JsonSerializerOptions)null) ?? new List<string>()
             );
-            
+
             modelBuilder.Entity<Recipe>()
                 .Property(r => r.Ingredients)
                 .HasConversion(ConvertDictionaryString);
