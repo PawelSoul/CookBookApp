@@ -11,6 +11,6 @@ namespace CookBookApp.Repositories.Interfaces
     {
         Task<List<Recipe>> FindRecipes(string name);
         Task<bool> AddRecipeAsync(Recipe recipe);
-        Task<List<Recipe>> GetAllRecipesAsync();
+        Task<List<Recipe>> GetAllRecipesWithAuthorAsync();
     }
 }

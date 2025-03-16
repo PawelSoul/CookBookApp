@@ -26,24 +26,30 @@ namespace CookBookApp.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //Zamienia biblioteke Dictionary<string, double> na string lub na odwrót
-            var ConvertDictionaryString = new ValueConverter<Dictionary<string, double>, string>(
+            var ConvertIngredientList = new ValueConverter<List<Ingredient>, string>(
                 v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
-                v => JsonSerializer.Deserialize<Dictionary<string, double>>(v, (JsonSerializerOptions)null) ?? new Dictionary<string, double>()
+                v => JsonSerializer.Deserialize<List<Ingredient>>(v, (JsonSerializerOptions)null) ?? new List<Ingredient>()
             );
-            //Zamienia biblioteke List<string> na string lub na odwrót
-            var ConvertListString = new ValueConverter<List<string>, string>(
+
+            var ConvertInstructionStepList = new ValueConverter<List<InstructionStep>, string>(
                 v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
-                v => JsonSerializer.Deserialize<List<string>>(v, (JsonSerializerOptions)null) ?? new List<string>()
+                v => JsonSerializer.Deserialize<List<InstructionStep>>(v, (JsonSerializerOptions)null) ?? new List<InstructionStep>()
             );
 
             modelBuilder.Entity<Recipe>()
                 .Property(r => r.Ingredients)
-                .HasConversion(ConvertDictionaryString);
+                .HasConversion(ConvertIngredientList);
 
             modelBuilder.Entity<Recipe>()
                 .Property(r => r.InstructionSteps)
-                .HasConversion(ConvertDictionaryString);
+                .HasConversion(ConvertInstructionStepList);
+
+            // Konfiguracja relacji Author - Recipe
+            modelBuilder.Entity<Author>()
+                .HasMany(a => a.Recipes)
+                .WithOne(r => r.Author)
+                .HasForeignKey(r => r.AuthorId)
+                .OnDelete(DeleteBehavior.Cascade); // możesz ustawić co ma się dziać przy usunięciu autora
         }
     }
 }

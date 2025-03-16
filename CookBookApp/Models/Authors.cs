@@ -10,8 +10,10 @@ namespace CookBookApp.Models
     {
         [Key]
         public int Id { get; set; }
-
         public string Name { get; set; }
+        public string Description { get; set; }
+        // Jeden autor ma wiele przepisów
+        public List<Recipe> Recipes { get; set; } = new();
 
     }
 }

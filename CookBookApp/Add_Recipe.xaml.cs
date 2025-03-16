@@ -1,12 +1,5 @@
-using Microsoft.Maui.Controls;
 using System.Collections.ObjectModel;
-using System;
-using System.IO;
-using System.Threading.Tasks;
-using Microsoft.Maui.Storage;
 using CookBookApp.Models;
-using CookBookApp.Data;
-using Microsoft.EntityFrameworkCore;
 using CookBookApp.Repositories.Interfaces;
 
 namespace CookBookApp
@@ -15,10 +8,13 @@ namespace CookBookApp
     {
         public ObservableCollection<string> Images { get; set; } = new ObservableCollection<string>();
 
-        public Dictionary<string, double> Ingredients { get; set; } = new Dictionary<string, double>();
-        public Dictionary<string, double?> InstructionSteps { get; set; } = new Dictionary<string, double?>();
+        //public Dictionary<string, double> Ingredients { get; set; } = new Dictionary<string, double>();
+        //public Dictionary<string, double?> InstructionSteps { get; set; } = new Dictionary<string, double?>();
 
         IBaseRepository _baseRepository;
+
+        Recipe _newRecipe = new Recipe();
+        int _stepCount = 1;
 
         public Add_Recipe(IBaseRepository baseRepository)// Konstruktor, który dostaje DbContext z DI
         {
@@ -26,7 +22,9 @@ namespace CookBookApp
             ImagesCollectionView.ItemsSource = Images;
             _baseRepository = baseRepository;
 
-            var newRecipe = new Recipe();
+            _newRecipe = new Recipe();
+            _newRecipe.Ingredients = new List<Ingredient>();
+            _newRecipe.InstructionSteps = new List<InstructionStep>();
         }
 
         private async void OnAddImageClicked(object sender, EventArgs e)
@@ -63,6 +61,14 @@ namespace CookBookApp
         // Funkcja do dodawania nowego sk³adnika z gramatur¹
         private void AddIngredientEntry(string placeholder, string unit)
         {
+            if(!ValidationAddIngredient())
+            {
+                return;
+            }
+            var newIngredient = new Ingredient { Name = IngredientEntry.Text, Quantity = double.Parse(IngredientAmount.Text), Unit = IngredientUnitPicker.SelectedItem.ToString() };
+
+            _newRecipe.Ingredients.Add(newIngredient);
+
             var layout = new HorizontalStackLayout { Spacing = 5 };
 
             var removeButton = new Button
@@ -94,18 +100,74 @@ namespace CookBookApp
                 WidthRequest = 80
             };
 
+            var unitPicker = new Entry
+            {
+                Placeholder = unit,
+                Keyboard = Keyboard.Numeric,
+                BackgroundColor = Color.FromHex("#3B3533"),
+                PlaceholderColor = Colors.White,
+                WidthRequest = 110
+            };
+
             removeButton.Clicked += (s, e) => IngredientsList.Children.Remove(layout);
 
             layout.Children.Add(removeButton);
             layout.Children.Add(ingredientEntry);
             layout.Children.Add(amountEntry);
+            layout.Children.Add(unitPicker);
 
             IngredientsList.Children.Add(layout);
+        }
+
+        private bool ValidationAddIngredient()
+        {
+            // Walidacja pól
+            bool isValid = true;
+
+            if (string.IsNullOrWhiteSpace(IngredientEntry.Text))
+            {
+                IngredientEntry.BackgroundColor = Colors.Red; // Czerwona ramka
+                isValid = false;
+            }
+            else
+            {
+                IngredientEntry.BackgroundColor = Colors.Transparent;
+            }
+
+            if (string.IsNullOrWhiteSpace(IngredientAmount.Text) || !double.TryParse(IngredientAmount.Text, out double quantity))
+            {
+                IngredientAmount.BackgroundColor = Colors.Red;
+                isValid = false;
+            }
+            else
+            {
+                IngredientAmount.BackgroundColor = Colors.Transparent;
+            }
+
+            if (IngredientUnitPicker.SelectedItem == null)
+            {
+                IngredientUnitPicker.BackgroundColor = Colors.Red;
+                isValid = false;
+            }
+            else
+            {
+                IngredientUnitPicker.BackgroundColor = Colors.Transparent;
+            }
+            return isValid;
         }
 
         // Funkcja do dodawania nowego kroku z czasem wykonania
         private void AddStepEntry(string placeholder, string unit)
         {
+            
+            if (!ValidAddStep())
+            {
+                return;
+            }
+            _stepCount += 1;
+            var newIngredientStep = new InstructionStep { StepNumber = int.Parse(StepNumberLabel.Text), Description = StepEntry.Text };
+
+            _newRecipe.InstructionSteps.Add(newIngredientStep);
             var layout = new HorizontalStackLayout { Spacing = 5 };
 
             var removeButton = new Button
@@ -128,22 +190,52 @@ namespace CookBookApp
                 WidthRequest = 400
             };
 
-            var timeEntry = new Entry
+            var numberStep = new Entry
             {
-                Placeholder = unit,
+                Text = _stepCount.ToString(),
+                FontSize = 30,
+                FontAttributes = FontAttributes.Bold,
                 Keyboard = Keyboard.Numeric,
                 BackgroundColor = Color.FromHex("#3B3533"),
-                PlaceholderColor = Colors.White,
-                WidthRequest = 80
+                WidthRequest = 40
             };
 
             removeButton.Clicked += (s, e) => StepsList.Children.Remove(layout);
 
             layout.Children.Add(removeButton);
+            layout.Children.Add(numberStep);
             layout.Children.Add(stepEntry);
-            layout.Children.Add(timeEntry);
+
 
             StepsList.Children.Add(layout);
+        }
+
+        private bool ValidAddStep()
+        {
+            bool isValid = true;
+
+            // Walidacja numeru kroku
+            if (string.IsNullOrWhiteSpace(StepNumberLabel.Text) || !int.TryParse(StepNumberLabel.Text, out int stepNumber))
+            {
+                StepNumberLabel.BackgroundColor = Colors.Red;
+                isValid = false;
+            }
+            else
+            {
+                StepNumberLabel.BackgroundColor = Colors.Transparent;
+            }
+
+            // Walidacja opisu kroku
+            if (string.IsNullOrWhiteSpace(StepEntry.Text))
+            {
+                StepEntry.BackgroundColor = Colors.Red;
+                isValid = false;
+            }
+            else
+            {
+                StepEntry.BackgroundColor = Colors.Transparent;
+            }
+            return isValid;
         }
 
         // Usuwanie pierwszego sk³adnika
@@ -155,28 +247,14 @@ namespace CookBookApp
         // Usuwanie pierwszego kroku
         private void OnRemoveStepClicked(object sender, EventArgs e)
         {
-            FirstStepRow.IsVisible = false;
+            StepRow.IsVisible = false;
         }
 
         //Zapis Przepisu
         private async void OnSaveRecipeClicked(object sender, EventArgs e)
         {
-            var newRecipe = new Recipe
-            {
-                RecipeName = RecipeNameEntry.Text,
-                Ingredients = new Dictionary<string, double>
-            {
-                { "Makaron", 200 },
-                { "Sos pomidorowy", 150 }
-            },
-                InstructionSteps = new Dictionary<string, double?>
-            {
-                { "Ugotuj makaron", 10 },
-                { "Dodaj sos", 5 }
-            }
-            };
 
-            var result = await _baseRepository.AddRecipeAsync(newRecipe);
+            var result = await _baseRepository.AddRecipeAsync(_newRecipe);
 
             if (result)
             {
