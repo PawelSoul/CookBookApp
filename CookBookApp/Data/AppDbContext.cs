@@ -43,7 +43,7 @@ namespace CookBookApp.Data
 
             modelBuilder.Entity<Recipe>()
                 .Property(r => r.InstructionSteps)
-                .HasConversion(ConvertListString);
+                .HasConversion(ConvertDictionaryString);
         }
     }
 }

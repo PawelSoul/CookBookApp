@@ -10,5 +10,7 @@ namespace CookBookApp.Repositories.Interfaces
     public interface IBaseRepository
     {
         Task<List<Recipe>> FindRecipes(string name);
+        Task<bool> AddRecipeAsync(Recipe recipe);
+        Task<List<Recipe>> GetAllRecipesAsync();
     }
 }

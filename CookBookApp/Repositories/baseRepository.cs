@@ -25,5 +25,26 @@ namespace CookBookApp.Repositories
                 .Where(r => EF.Functions.Like(r.RecipeName, $"%{name}%"))
                 .ToListAsync();
         }
+
+        public async Task<bool> AddRecipeAsync(Recipe recipe)
+        {
+            try
+            {
+                await _dbContext.Recipes.AddAsync(recipe);
+                await _dbContext.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // Możesz logować błąd tutaj
+                Console.WriteLine($"Error adding recipe: {ex.Message}");
+                return false;
+            }
+        }
+
+        public async Task<List<Recipe>> GetAllRecipesAsync()
+        {
+            return await _dbContext.Recipes.ToListAsync();
+        }
     }
 }

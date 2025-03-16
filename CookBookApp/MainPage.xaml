@@ -79,7 +79,7 @@
 
             <!-- Licznik przepisów -->
             <Frame Grid.Row="1" Margin="30,10,0,0" WidthRequest="40" HeightRequest="30"
-                   CornerRadius="10" BackgroundColor="White" BorderColor="#A85400" Padding="5">
+                   CornerRadius="5" BackgroundColor="White" BorderColor="#A85400" Padding="5">
                 <Label x:Name="ResultsCountLabel"
                        Text="0"
                        FontSize="16"
