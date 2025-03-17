@@ -9,7 +9,7 @@
 
             <!-- Nazwa -->
             <Label Text="Nazwa przepisu:" FontSize="18" FontAttributes="Bold"/>
-            <Entry x:Name="RecipeNameEntry" Placeholder="Wpisz nazwę przepisu" FontAttributes="Italic" MaxLength="200" BackgroundColor="#3B3533" PlaceholderColor="White"/>
+            <Entry x:Name="RecipeNameEntry" Placeholder="Wpisz nazwę przepisu" MaxLength="200" BackgroundColor="#3B3533" PlaceholderColor="White"/>
 
             <!-- Składniki -->
             <Label Text="Składniki:" FontSize="18" FontAttributes="Bold"/>
@@ -22,12 +22,12 @@
 
                         <!-- Składnik -->
                         <Frame x:Name="IngredientEntryFrame" BorderColor="White" CornerRadius="10" Padding="5" BackgroundColor="Transparent">
-                            <Entry x:Name="IngredientEntry" Placeholder="Dodaj składnik" FontAttributes="Italic" MaxLength="200" BackgroundColor="#3B3533" PlaceholderColor="White" WidthRequest="475"/>
+                            <Entry x:Name="IngredientEntry" Placeholder="Dodaj składnik ..." MaxLength="200" BackgroundColor="#3B3533" PlaceholderColor="White" WidthRequest="475"/>
                         </Frame>
 
                         <!-- Ilość -->
                         <Frame x:Name="IngredientAmountFrame" BorderColor="White" CornerRadius="10" Padding="5" BackgroundColor="Transparent">
-                            <Entry x:Name="IngredientAmount" Placeholder="0.00" Keyboard="Numeric" BackgroundColor="#3B3533" PlaceholderColor="White" WidthRequest="80" FontAttributes="Italic"/>
+                            <Entry x:Name="IngredientAmount" Placeholder="0.00" Keyboard="Numeric" BackgroundColor="#3B3533" PlaceholderColor="White" WidthRequest="80"/>
                         </Frame>
 
                         <!-- Jednostka -->

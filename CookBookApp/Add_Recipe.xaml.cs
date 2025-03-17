@@ -61,7 +61,6 @@ namespace CookBookApp
                 {
                     Text = "",
                     Placeholder = placeholderNazwa,
-                    FontAttributes = FontAttributes.Italic,
                     MaxLength = 200,
                     BackgroundColor = Color.FromHex("#3B3533"),
                     PlaceholderColor = Colors.White,
@@ -84,7 +83,6 @@ namespace CookBookApp
                     BackgroundColor = Color.FromHex("#3B3533"),
                     PlaceholderColor = Colors.White,
                     WidthRequest = 80,
-                    FontAttributes = FontAttributes.Italic
                 }
             };
 

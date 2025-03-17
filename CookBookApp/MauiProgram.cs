@@ -30,7 +30,8 @@ namespace CookBookApp
 
             // Rejestracja DbContext
             builder.Services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(connectionString));
+                options.UseSqlServer(connectionString,
+                    b => b.MigrationsAssembly("CookBookApp.Migrations")));
 
             // Rejestracja repozytorium
             builder.Services.AddScoped<IBaseRepository, RecipeRepository>();
