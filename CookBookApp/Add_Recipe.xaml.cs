@@ -17,9 +17,9 @@ namespace CookBookApp
             InitializeComponent();
             _baseRepository = baseRepository;
 
-            _newRecipe = new Recipe();
-            _newRecipe.Ingredients = new List<Ingredient>();
-            _newRecipe.InstructionSteps = new List<InstructionStep>();
+            //_newRecipe = new Recipe();
+            //_newRecipe.Ingredients = new List<Ingredient>();
+            //_newRecipe.InstructionSteps = new List<InstructionStep>();
         }
 
         private void OnAddIngredientClicked(object sender, EventArgs e)
@@ -167,7 +167,7 @@ namespace CookBookApp
 
             StepsList.Children.Add(layout);
         }
-        private bool ValidationAddIngredient()
+        private bool ValidationAddAllIngredient()
         {
             bool isValid = true;
 
@@ -175,58 +175,87 @@ namespace CookBookApp
             {
                 if (ingredient is HorizontalStackLayout row)
                 {
-                    // Pobierz Entry z nazw¹ sk³adnika
-                    var ingredientFrame = row.Children[1] as Frame;
-                    var ingredientEntry = ingredientFrame?.Content as Entry;
-                    var ingredientName = ingredientEntry?.Text;
-
-                    // Pobierz Entry z iloœci¹
-                    var amountFrame = row.Children[2] as Frame;
-                    var amountEntry = amountFrame?.Content as Entry;
-                    var amountValue = amountEntry?.Text;
-
-                    // Pobierz Picker z jednostk¹
-                    var pickerFrame = row.Children[3] as Frame;
-                    var unitPicker = pickerFrame?.Content as Picker;
-                    var selectedUnit = unitPicker?.SelectedItem?.ToString();
+                    Frame? ingredientFrame, amountFrame, pickerFrame;
+                    string? ingredientName, amountValue, selectedUnit;
+                    GetIngredientDateFromEntry(row, out ingredientFrame, out ingredientName, out amountFrame, out amountValue, out pickerFrame, out selectedUnit);
 
                     // Walidacja nazwy sk³adnika
-                    if (string.IsNullOrWhiteSpace(ingredientName))
-                    {
-                        ingredientFrame.BorderColor = Colors.Red;
-                        isValid = false;
-                    }
-                    else
-                    {
-                        ingredientFrame.BorderColor = Colors.Transparent;
-                    }
+                    isValid = ValidateName(isValid, ingredientFrame, ingredientName);
 
                     // Walidacja iloœci
-                    if (string.IsNullOrWhiteSpace(amountValue) || !double.TryParse(amountValue, out double quantity) || quantity <= 0.00)
-                    {
-                        amountFrame.BorderColor = Colors.Red;
-                        isValid = false;
-                    }
-                    else
-                    {
-                        amountFrame.BorderColor = Colors.Transparent;
-                    }
+                    isValid = ValidateAmount(isValid, amountFrame, amountValue);
 
                     // Walidacja jednostki
-                    if (string.IsNullOrWhiteSpace(selectedUnit))
-                    {
-                        pickerFrame.BorderColor = Colors.Red;
-                        isValid = false;
-                    }
-                    else
-                    {
-                        pickerFrame.BorderColor = Colors.Transparent;
-                    }
+                    isValid = ValidateUnit(isValid, pickerFrame, selectedUnit);
                 }
             }
 
             return isValid;
         }
+
+        private static bool ValidateUnit(bool isValid, Frame? pickerFrame, string? selectedUnit)
+        {
+            if (string.IsNullOrWhiteSpace(selectedUnit))
+            {
+                pickerFrame.BorderColor = Colors.Red;
+                isValid = false;
+            }
+            else
+            {
+                pickerFrame.BorderColor = Colors.Transparent;
+            }
+
+            return isValid;
+        }
+
+        private static bool ValidateAmount(bool isValid, Frame? amountFrame, string? amountValue)
+        {
+            if (string.IsNullOrWhiteSpace(amountValue) || !double.TryParse(amountValue, out double quantity) || quantity <= 0.00)
+            {
+                amountFrame.BorderColor = Colors.Red;
+                isValid = false;
+            }
+            else
+            {
+                amountFrame.BorderColor = Colors.Transparent;
+            }
+
+            return isValid;
+        }
+
+        private static bool ValidateName(bool isValid, Frame? ingredientFrame, string? ingredientName)
+        {
+            if (string.IsNullOrWhiteSpace(ingredientName))
+            {
+                ingredientFrame.BorderColor = Colors.Red;
+                isValid = false;
+            }
+            else
+            {
+                ingredientFrame.BorderColor = Colors.Transparent;
+            }
+
+            return isValid;
+        }
+
+        private static void GetIngredientDateFromEntry(HorizontalStackLayout row, out Frame? ingredientFrame, out string? ingredientName, out Frame? amountFrame, out string? amountValue, out Frame? pickerFrame, out string? selectedUnit)
+        {
+            // Pobierz Entry z nazw¹ sk³adnika
+            ingredientFrame = row.Children[1] as Frame;
+            var ingredientEntry = ingredientFrame?.Content as Entry;
+            ingredientName = ingredientEntry?.Text;
+
+            // Pobierz Entry z iloœci¹
+            amountFrame = row.Children[2] as Frame;
+            var amountEntry = amountFrame?.Content as Entry;
+            amountValue = amountEntry?.Text;
+
+            // Pobierz Picker z jednostk¹
+            pickerFrame = row.Children[3] as Frame;
+            var unitPicker = pickerFrame?.Content as Picker;
+            selectedUnit = unitPicker?.SelectedItem?.ToString();
+        }
+
         private bool ValidAddStep()
         {
             bool isValid = true;
@@ -259,45 +288,69 @@ namespace CookBookApp
         //Zapis Przepisu
         private async void OnSaveRecipeClicked(object sender, EventArgs e)
         {
-            if (ValidateAll()) return;
+            if (!ValidateAll()) return;
 
+            var newRecipe = new Recipe { RecipeName = RecipeNameEntry.Text };
 
-            //// Dodanie nowego sk³adnika do modelu
-            //var newIngredient = new Ingredient
-            //{
-            //    Name = IngredientEntry.Text,
-            //    Quantity = double.Parse(IngredientAmount.Text),
-            //    Unit = IngredientUnitPicker.SelectedItem.ToString()
-            //};
+            // Dodanie nowego sk³adnika do modelu
+            foreach (var ingredient in IngredientsList.Children)
+            {
+                if (ingredient is HorizontalStackLayout row)
+                {
+                    Frame? ingredientFrame, amountFrame, pickerFrame;
+                    string? ingredientName, amountValue, selectedUnit;
+                    GetIngredientDateFromEntry(row, out ingredientFrame, out ingredientName, out amountFrame, out amountValue, out pickerFrame, out selectedUnit);
 
-            //_newRecipe.Ingredients.Add(newIngredient);
+                    var newIngredient = new Ingredient
+                    {
+                        Name = ingredientName,
+                        Quantity = double.Parse(amountValue),
+                        Unit = selectedUnit
+                    };
 
-            //// Dodanie nowego sk³adnika do modelu
-            //var newInstructionStep = new InstructionStep
-            //{
-            //    StepNumber = _stepCount,
-            //    Description = StepEntry.Text
-            //};
+                    _newRecipe.Ingredients.Add(newIngredient);
+                }
+            }
 
-            //_newRecipe.InstructionSteps.Add(newInstructionStep);
+            // Dodanie nowego kroku do modelu
+            foreach (var step in StepsList.Children)
+            {
+                if (step is HorizontalStackLayout row)
+                {
+                    var stepFrame = row.Children[1] as Frame;
+                    var stepEntry = stepFrame?.Content as Entry;
+                    var stepDescription = stepEntry?.Text;
 
+                    if (!string.IsNullOrWhiteSpace(stepDescription))
+                    {
+                        var newInstructionStep = new InstructionStep
+                        {
+                            StepNumber = _stepCount,
+                            Description = StepEntry.Text
+                        };
 
-            //var result = await _baseRepository.AddRecipeAsync(_newRecipe);
+                        _newRecipe.InstructionSteps.Add(newInstructionStep);
+                    }
+                }
+            }
 
-            //if (result)
-            //{
-            //    // Sukces
-            //}
-            //else
-            //{
-            //    // Obs³uga b³êdu
-            //}
+            // Zapis do bazy
+            var result = await _baseRepository.SaveRecipeAsync(newRecipe);
+
+            if (result)
+            {
+                await DisplayAlert("Sukces", "Przepis zapisany!", "OK");
+            }
+            else
+            {
+                await DisplayAlert("B³¹d", "Wyst¹pi³ problem podczas zapisu.", "OK");
+            }
         }
 
         private bool ValidateAll()
         {
             bool isStepsValid = ValidAddStep();
-            bool isIngredientsValid = ValidationAddIngredient();
+            bool isIngredientsValid = ValidationAddAllIngredient();
 
             return isStepsValid && isIngredientsValid;
         }

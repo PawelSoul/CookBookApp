@@ -26,7 +26,7 @@ namespace CookBookApp.Repositories
                 .ToListAsync();
         }
 
-        public async Task<bool> AddRecipeAsync(Recipe recipe)
+        public async Task<bool> SaveRecipeAsync(Recipe recipe)
         {
             try
             {
