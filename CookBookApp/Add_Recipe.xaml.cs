@@ -42,7 +42,7 @@ namespace CookBookApp
             var removeButton = new Button
             {
                 Text = "-",
-                FontSize = 20,
+                FontSize = 30,
                 TextColor = Colors.White,
                 BackgroundColor = Colors.Red,
                 WidthRequest = 40,
@@ -66,7 +66,7 @@ namespace CookBookApp
                     MaxLength = 200,
                     BackgroundColor = Color.FromHex("#3B3533"),
                     PlaceholderColor = Colors.White,
-                    WidthRequest = 400
+                    WidthRequest = 475
                 }
             };
 
@@ -128,7 +128,7 @@ namespace CookBookApp
             var removeButton = new Button
             {
                 Text = "-",
-                FontSize = 20,
+                FontSize = 30,
                 TextColor = Colors.White,
                 BackgroundColor = Colors.Red,
                 WidthRequest = 40,

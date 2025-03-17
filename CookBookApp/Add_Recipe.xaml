@@ -18,11 +18,11 @@
 
                     <HorizontalStackLayout x:Name="FirstIngredientRow" Spacing="5">
 
-                        <Button Text="-" FontSize="20" TextColor="White" BackgroundColor="Red" WidthRequest="40" HeightRequest="40"/>
+                        <Button Text="-" FontSize="30" TextColor="White" BackgroundColor="Red" WidthRequest="40" HeightRequest="40"/>
 
                         <!-- Składnik -->
                         <Frame x:Name="IngredientEntryFrame" BorderColor="White" CornerRadius="10" Padding="5" BackgroundColor="Transparent">
-                            <Entry x:Name="IngredientEntry" Placeholder="Dodaj składnik" FontAttributes="Italic" MaxLength="200" BackgroundColor="#3B3533" PlaceholderColor="White" WidthRequest="400"/>
+                            <Entry x:Name="IngredientEntry" Placeholder="Dodaj składnik" FontAttributes="Italic" MaxLength="200" BackgroundColor="#3B3533" PlaceholderColor="White" WidthRequest="475"/>
                         </Frame>
 
                         <!-- Ilość -->
@@ -59,7 +59,7 @@
 
                 <HorizontalStackLayout x:Name="StepRow" Spacing="5">
 
-                    <Button Text="-" FontSize="20" TextColor="White" BackgroundColor="Red" WidthRequest="40" HeightRequest="40"/>
+                    <Button Text="-" FontSize="30" TextColor="White" BackgroundColor="Red" WidthRequest="40" HeightRequest="40"/>
 
                     <!-- Krok -->
                     <Frame x:Name="StepEntryFrame" BorderColor="White" CornerRadius="10" Padding="5" BackgroundColor="Transparent">
