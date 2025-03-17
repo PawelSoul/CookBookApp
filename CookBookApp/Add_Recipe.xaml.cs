@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Net.WebSockets;
 using CookBookApp.Models;
 using CookBookApp.Repositories.Interfaces;
 
@@ -115,6 +116,57 @@ namespace CookBookApp
             IngredientsList.Children.Add(layout);
         }
 
+        
+
+        // Funkcja do dodawania nowego kroku z czasem wykonania
+        private void AddStepEntry(string placeholder, string unit)
+        {
+            _stepCount += 1;
+            var layout = new HorizontalStackLayout { Spacing = 5 };
+
+            // Przycisk usuwania
+            var removeButton = new Button
+            {
+                Text = "-",
+                FontSize = 20,
+                TextColor = Colors.White,
+                BackgroundColor = Colors.Red,
+                WidthRequest = 40,
+                HeightRequest = 40
+            }; 
+
+            // Opis kroku (Entry w ramce)
+            var stepEntryFrame = new Frame
+            {
+                BorderColor = Colors.White,
+                CornerRadius = 10,
+                Padding = 5,
+                BackgroundColor = Colors.Transparent,
+                Content = new Entry
+                {
+                    Text = "",
+                    Placeholder = placeholder,
+                    FontAttributes = FontAttributes.Italic,
+                    MaxLength = 200,
+                    BackgroundColor = Color.FromHex("#3B3533"),
+                    PlaceholderColor = Colors.White,
+                    WidthRequest = 700
+                }
+            };
+
+            // Obs³uga usuwania kroku
+            removeButton.Clicked += (s, e) =>
+            {
+                StepsList.Children.Remove(layout);
+                _stepCount -= 1;
+            };
+
+            // Dodanie do layoutu
+            layout.Children.Add(removeButton);
+            layout.Children.Add(stepEntryFrame);
+
+            StepsList.Children.Add(layout);
+        }
         private bool ValidationAddIngredient()
         {
             bool isValid = true;
@@ -175,91 +227,40 @@ namespace CookBookApp
 
             return isValid;
         }
-
-        // Funkcja do dodawania nowego kroku z czasem wykonania
-        private void AddStepEntry(string placeholder, string unit)
-        {
-            _stepCount += 1;
-            var layout = new HorizontalStackLayout { Spacing = 5 };
-
-            // Przycisk usuwania
-            var removeButton = new Button
-            {
-                Text = "-",
-                FontSize = 20,
-                TextColor = Colors.White,
-                BackgroundColor = Colors.Red,
-                WidthRequest = 40,
-                HeightRequest = 40
-            }; 
-
-            // Opis kroku (Entry w ramce)
-            var stepEntryFrame = new Frame
-            {
-                BorderColor = Colors.White,
-                CornerRadius = 10,
-                Padding = 5,
-                BackgroundColor = Colors.Transparent,
-                Content = new Entry
-                {
-                    Text = "",
-                    Placeholder = placeholder,
-                    FontAttributes = FontAttributes.Italic,
-                    MaxLength = 200,
-                    BackgroundColor = Color.FromHex("#3B3533"),
-                    PlaceholderColor = Colors.White,
-                    WidthRequest = 700
-                }
-            };
-
-            // Obs³uga usuwania kroku
-            removeButton.Clicked += (s, e) =>
-            {
-                StepsList.Children.Remove(layout);
-                _stepCount -= 1;
-            };
-
-            // Dodanie do layoutu
-            layout.Children.Add(removeButton);
-            layout.Children.Add(stepEntryFrame);
-
-            StepsList.Children.Add(layout);
-        }
-
-        private bool ValidAddStep(string step)
+        private bool ValidAddStep()
         {
             bool isValid = true;
 
-            if (string.IsNullOrWhiteSpace(step))
+            foreach (var step in StepsList.Children)
             {
-                StepEntryFrame.BorderColor = Colors.Red;
-                isValid = false;
+                if (step is HorizontalStackLayout row)
+                {
+                    foreach (var child in row.Children)
+                    {
+                        if (child is Frame frame && frame.Content is Entry entry)
+                        {
+                            if (string.IsNullOrWhiteSpace(entry.Text))
+                            {
+                                frame.BorderColor = Colors.Red;
+                                isValid = false;
+                            }
+                            else
+                            {
+                                frame.BorderColor = Colors.Transparent;
+                            }
+                        }
+                    }
+                }
             }
-            else
-            {
-                StepEntryFrame.BorderColor = Colors.Transparent;
-            }
+
             return isValid;
         }
 
         //Zapis Przepisu
         private async void OnSaveRecipeClicked(object sender, EventArgs e)
         {
-            if (!ValidationAddIngredient()) return;
-            
+            if (ValidateAll()) return;
 
-            foreach (var step in StepsList.Children)
-            {
-                if (step is HorizontalStackLayout row)
-                {
-                    // Pobierz Entry z nazw¹ sk³adnika
-                    var stepFrame = row.Children[1] as Frame;
-                    var stepEntry = stepFrame?.Content as Entry;
-                    var stepName = stepEntry?.Text;
-
-                    if (!ValidAddStep(stepName)) continue;
-                }
-            }
 
             //// Dodanie nowego sk³adnika do modelu
             //var newIngredient = new Ingredient
@@ -293,6 +294,12 @@ namespace CookBookApp
             //}
         }
 
+        private bool ValidateAll()
+        {
+            bool isStepsValid = ValidAddStep();
+            bool isIngredientsValid = ValidationAddIngredient();
 
+            return isStepsValid && isIngredientsValid;
+        }
     }
 }
