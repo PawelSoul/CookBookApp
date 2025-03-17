@@ -4,7 +4,6 @@ using CookBookApp.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using System.Reflection;
 
 namespace CookBookApp
 {
@@ -13,6 +12,7 @@ namespace CookBookApp
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();
+
             builder
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>
@@ -21,26 +21,35 @@ namespace CookBookApp
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-            // 📌 Wczytaj konfigurację z pliku appsettings.json
-            var config = new ConfigurationBuilder()
-                .AddJsonFile(Path.Combine(AppContext.BaseDirectory, "appsettings.json"), optional: false, reloadOnChange: true)
-                .Build();
+            // Wczytanie konfiguracji z appsettings.json
+            var config = builder.Configuration;
+            config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
-            // Pobierz connection string z pliku
-            string connectionString = config.GetConnectionString("DefaultConnection");
+            // Pobranie connection string
+            var connectionString = config.GetConnectionString("DefaultConnection");
 
-            // 🔹 Rejestracja DbContext w DI
+            // Rejestracja DbContext
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(connectionString));
 
-            // 🔹 Rejestracja repozytorium w DI
-            builder.Services.AddScoped<IBaseRepository, baseRepository>();
+            // Rejestracja repozytorium
+            builder.Services.AddScoped<IBaseRepository, RecipeRepository>();
 
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
 
-            return builder.Build();
+            // --- KLUCZOWA ZMIANA --- tylko jedno builder.Build()
+            var app = builder.Build();
+
+            // Automatyczne migracje (przy starcie aplikacji)
+            using (var scope = app.Services.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                dbContext.Database.Migrate();
+            }
+
+            return app; // Zwracamy już zbudowaną app
         }
     }
 }

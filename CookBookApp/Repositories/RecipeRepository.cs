@@ -2,22 +2,21 @@
 using CookBookApp.Models;
 using CookBookApp.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+
 
 
 namespace CookBookApp.Repositories
 {
-    internal class baseRepository : IBaseRepository
+    internal class RecipeRepository : IBaseRepository
     {
+        private readonly ILogger<RecipeRepository> _logger;
         private readonly AppDbContext _dbContext;
 
-        public baseRepository(AppDbContext dbContext)
+        public RecipeRepository(AppDbContext dbContext, ILogger<RecipeRepository> logger)
         {
             _dbContext = dbContext;
+            _logger = logger;
         }
         public async Task<List<Recipe>> FindRecipes(string name)
         {
@@ -36,8 +35,7 @@ namespace CookBookApp.Repositories
             }
             catch (Exception ex)
             {
-                // Możesz logować błąd tutaj
-                Console.WriteLine($"Error adding recipe: {ex.Message}");
+                _logger.LogError(ex, "Error adding recipe");
                 return false;
             }
         }

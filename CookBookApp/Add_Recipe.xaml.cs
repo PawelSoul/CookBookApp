@@ -10,7 +10,6 @@ namespace CookBookApp
         IBaseRepository _baseRepository;
 
         Recipe _newRecipe = new Recipe();
-        int _stepCount = 1;
 
         public Add_Recipe(IBaseRepository baseRepository)// Konstruktor, który dostaje DbContext z DI
         {
@@ -121,7 +120,6 @@ namespace CookBookApp
         // Funkcja do dodawania nowego kroku z czasem wykonania
         private void AddStepEntry(string placeholder, string unit)
         {
-            _stepCount += 1;
             var layout = new HorizontalStackLayout { Spacing = 5 };
 
             // Przycisk usuwania
@@ -155,11 +153,7 @@ namespace CookBookApp
             };
 
             // Obs³uga usuwania kroku
-            removeButton.Clicked += (s, e) =>
-            {
-                StepsList.Children.Remove(layout);
-                _stepCount -= 1;
-            };
+            removeButton.Clicked += (s, e) => StepsList.Children.Remove(layout);
 
             // Dodanie do layoutu
             layout.Children.Add(removeButton);
@@ -290,6 +284,7 @@ namespace CookBookApp
         {
             if (!ValidateAll()) return;
 
+            int _stepCount = 0;
             var newRecipe = new Recipe { RecipeName = RecipeNameEntry.Text };
 
             // Dodanie nowego sk³adnika do modelu
@@ -315,6 +310,7 @@ namespace CookBookApp
             // Dodanie nowego kroku do modelu
             foreach (var step in StepsList.Children)
             {
+                _stepCount += 1;
                 if (step is HorizontalStackLayout row)
                 {
                     var stepFrame = row.Children[1] as Frame;

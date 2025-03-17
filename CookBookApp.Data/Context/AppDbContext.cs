@@ -7,7 +7,8 @@ namespace CookBookApp.Data
 {
     public class AppDbContext : DbContext
     {
-        private readonly string _connectionString = "Server=tcp:etoe-database-server.database.windows.net,1433;Initial Catalog=etoe-database;Persist Security Info=False;User ID=etoe_pawel;Password=Gwiazda100;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Authentication=Active Directory Password";
+        private readonly string _connectionString = "Server=tcp:etoe-database-server.database.windows.net,1433;Initial Catalog=etoe-database;Persist Security Info=False;User ID=etoe_pawel;Password=Gwiazda100;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False";
+        
 
         public DbSet<Recipe> Recipes { get; set; }
         public DbSet<Author> Authors { get; set; }
