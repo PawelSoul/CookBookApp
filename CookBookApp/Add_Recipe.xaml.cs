@@ -6,11 +6,6 @@ namespace CookBookApp
 {
     public partial class Add_Recipe : ContentPage
     {
-        public ObservableCollection<string> Images { get; set; } = new ObservableCollection<string>();
-
-        //public Dictionary<string, double> Ingredients { get; set; } = new Dictionary<string, double>();
-        //public Dictionary<string, double?> InstructionSteps { get; set; } = new Dictionary<string, double?>();
-
         IBaseRepository _baseRepository;
 
         Recipe _newRecipe = new Recipe();
@@ -19,7 +14,6 @@ namespace CookBookApp
         public Add_Recipe(IBaseRepository baseRepository)// Konstruktor, który dostaje DbContext z DI
         {
             InitializeComponent();
-            ImagesCollectionView.ItemsSource = Images;
             _baseRepository = baseRepository;
 
             _newRecipe = new Recipe();
@@ -27,50 +21,23 @@ namespace CookBookApp
             _newRecipe.InstructionSteps = new List<InstructionStep>();
         }
 
-        private async void OnAddImageClicked(object sender, EventArgs e)
-        {
-            try
-            {
-                var result = await FilePicker.PickAsync(new PickOptions
-                {
-                    FileTypes = FilePickerFileType.Images
-                });
-
-                if (result != null)
-                {
-                    string imagePath = result.FullPath;
-                    Images.Add(imagePath);
-                }
-            }
-            catch (Exception ex)
-            {
-                await DisplayAlert("B³¹d", $"Nie uda³o siê dodaæ zdjêcia: {ex.Message}", "OK");
-            }
-        }
-
         private void OnAddIngredientClicked(object sender, EventArgs e)
         {
-            AddIngredientEntry("Dodaj sk³adnik", "g");
+            AddIngredientEntry("Dodaj sk³adnik ...", "0,00");
         }
 
         private void OnAddStepsClicked(object sender, EventArgs e)
         {
-            AddStepEntry("Dodaj krok ...", "min");
+            AddStepEntry("Dodaj krok ...", "0");
         }
 
         // Funkcja do dodawania nowego sk³adnika z gramatur¹
-        private void AddIngredientEntry(string placeholder, string unit)
+        private void AddIngredientEntry(string placeholderNazwa, string placeholderAmount)
         {
-            if(!ValidationAddIngredient())
-            {
-                return;
-            }
-            var newIngredient = new Ingredient { Name = IngredientEntry.Text, Quantity = double.Parse(IngredientAmount.Text), Unit = IngredientUnitPicker.SelectedItem.ToString() };
-
-            _newRecipe.Ingredients.Add(newIngredient);
-
+            // Tworzymy layout dla nowego sk³adnika
             var layout = new HorizontalStackLayout { Spacing = 5 };
 
+            // Przycisk usuwania
             var removeButton = new Button
             {
                 Text = "-",
@@ -81,95 +48,141 @@ namespace CookBookApp
                 HeightRequest = 40
             };
 
-            var ingredientEntry = new Entry
-            {
-                Placeholder = placeholder,
-                FontAttributes = FontAttributes.Italic,
-                MaxLength = 200,
-                BackgroundColor = Color.FromHex("#3B3533"),
-                PlaceholderColor = Colors.White,
-                WidthRequest = 400
-            };
-
-            var amountEntry = new Entry
-            {
-                Placeholder = unit,
-                Keyboard = Keyboard.Numeric,
-                BackgroundColor = Color.FromHex("#3B3533"),
-                PlaceholderColor = Colors.White,
-                WidthRequest = 80
-            };
-
-            var unitPicker = new Entry
-            {
-                Placeholder = unit,
-                Keyboard = Keyboard.Numeric,
-                BackgroundColor = Color.FromHex("#3B3533"),
-                PlaceholderColor = Colors.White,
-                WidthRequest = 110
-            };
-
             removeButton.Clicked += (s, e) => IngredientsList.Children.Remove(layout);
 
+            // Entry: Nazwa sk³adnika
+            var ingredientEntryFrame = new Frame
+            {
+                BorderColor = Colors.White,
+                CornerRadius = 10,
+                Padding = 5,
+                BackgroundColor = Colors.Transparent,
+                Content = new Entry
+                {
+                    Text = "",
+                    Placeholder = placeholderNazwa,
+                    FontAttributes = FontAttributes.Italic,
+                    MaxLength = 200,
+                    BackgroundColor = Color.FromHex("#3B3533"),
+                    PlaceholderColor = Colors.White,
+                    WidthRequest = 400
+                }
+            };
+
+            // Entry: Iloœæ
+            var amountEntryFrame = new Frame
+            {
+                BorderColor = Colors.White,
+                CornerRadius = 10,
+                Padding = 5,
+                BackgroundColor = Colors.Transparent,
+                Content = new Entry
+                {
+                    Text = "",
+                    Placeholder = placeholderAmount,
+                    Keyboard = Keyboard.Numeric,
+                    BackgroundColor = Color.FromHex("#3B3533"),
+                    PlaceholderColor = Colors.White,
+                    WidthRequest = 80,
+                    FontAttributes = FontAttributes.Italic
+                }
+            };
+
+            // Picker: Jednostka
+            var unitPicker = new Picker
+            {
+                WidthRequest = 110,
+                BackgroundColor = Color.FromHex("#3B3533"),
+                TextColor = Colors.White,
+                ItemsSource = new List<string> { "g", "ml", "szt", "³y¿ka", "szklanka" },
+                SelectedIndex = -1
+            };
+
+            var unitPickerFrame = new Frame
+            {
+                BorderColor = Colors.White,
+                CornerRadius = 10,
+                Padding = 5,
+                BackgroundColor = Colors.Transparent,
+                Content = unitPicker
+            };
+
             layout.Children.Add(removeButton);
-            layout.Children.Add(ingredientEntry);
-            layout.Children.Add(amountEntry);
-            layout.Children.Add(unitPicker);
+            layout.Children.Add(ingredientEntryFrame);
+            layout.Children.Add(amountEntryFrame);
+            layout.Children.Add(unitPickerFrame);
 
             IngredientsList.Children.Add(layout);
         }
 
         private bool ValidationAddIngredient()
         {
-            // Walidacja pól
             bool isValid = true;
 
-            if (string.IsNullOrWhiteSpace(IngredientEntry.Text))
+            foreach (var ingredient in IngredientsList.Children)
             {
-                IngredientEntry.BackgroundColor = Colors.Red; // Czerwona ramka
-                isValid = false;
-            }
-            else
-            {
-                IngredientEntry.BackgroundColor = Colors.Transparent;
+                if (ingredient is HorizontalStackLayout row)
+                {
+                    // Pobierz Entry z nazw¹ sk³adnika
+                    var ingredientFrame = row.Children[1] as Frame;
+                    var ingredientEntry = ingredientFrame?.Content as Entry;
+                    var ingredientName = ingredientEntry?.Text;
+
+                    // Pobierz Entry z iloœci¹
+                    var amountFrame = row.Children[2] as Frame;
+                    var amountEntry = amountFrame?.Content as Entry;
+                    var amountValue = amountEntry?.Text;
+
+                    // Pobierz Picker z jednostk¹
+                    var pickerFrame = row.Children[3] as Frame;
+                    var unitPicker = pickerFrame?.Content as Picker;
+                    var selectedUnit = unitPicker?.SelectedItem?.ToString();
+
+                    // Walidacja nazwy sk³adnika
+                    if (string.IsNullOrWhiteSpace(ingredientName))
+                    {
+                        ingredientFrame.BorderColor = Colors.Red;
+                        isValid = false;
+                    }
+                    else
+                    {
+                        ingredientFrame.BorderColor = Colors.Transparent;
+                    }
+
+                    // Walidacja iloœci
+                    if (string.IsNullOrWhiteSpace(amountValue) || !double.TryParse(amountValue, out double quantity) || quantity <= 0.00)
+                    {
+                        amountFrame.BorderColor = Colors.Red;
+                        isValid = false;
+                    }
+                    else
+                    {
+                        amountFrame.BorderColor = Colors.Transparent;
+                    }
+
+                    // Walidacja jednostki
+                    if (string.IsNullOrWhiteSpace(selectedUnit))
+                    {
+                        pickerFrame.BorderColor = Colors.Red;
+                        isValid = false;
+                    }
+                    else
+                    {
+                        pickerFrame.BorderColor = Colors.Transparent;
+                    }
+                }
             }
 
-            if (string.IsNullOrWhiteSpace(IngredientAmount.Text) || !double.TryParse(IngredientAmount.Text, out double quantity))
-            {
-                IngredientAmount.BackgroundColor = Colors.Red;
-                isValid = false;
-            }
-            else
-            {
-                IngredientAmount.BackgroundColor = Colors.Transparent;
-            }
-
-            if (IngredientUnitPicker.SelectedItem == null)
-            {
-                IngredientUnitPicker.BackgroundColor = Colors.Red;
-                isValid = false;
-            }
-            else
-            {
-                IngredientUnitPicker.BackgroundColor = Colors.Transparent;
-            }
             return isValid;
         }
 
         // Funkcja do dodawania nowego kroku z czasem wykonania
         private void AddStepEntry(string placeholder, string unit)
         {
-            
-            if (!ValidAddStep())
-            {
-                return;
-            }
             _stepCount += 1;
-            var newIngredientStep = new InstructionStep { StepNumber = int.Parse(StepNumberLabel.Text), Description = StepEntry.Text };
-
-            _newRecipe.InstructionSteps.Add(newIngredientStep);
             var layout = new HorizontalStackLayout { Spacing = 5 };
 
+            // Przycisk usuwania
             var removeButton = new Button
             {
                 Text = "-",
@@ -178,92 +191,106 @@ namespace CookBookApp
                 BackgroundColor = Colors.Red,
                 WidthRequest = 40,
                 HeightRequest = 40
-            };
+            }; 
 
-            var stepEntry = new Entry
+            // Opis kroku (Entry w ramce)
+            var stepEntryFrame = new Frame
             {
-                Placeholder = placeholder,
-                FontAttributes = FontAttributes.Italic,
-                MaxLength = 200,
-                BackgroundColor = Color.FromHex("#3B3533"),
-                PlaceholderColor = Colors.White,
-                WidthRequest = 400
+                BorderColor = Colors.White,
+                CornerRadius = 10,
+                Padding = 5,
+                BackgroundColor = Colors.Transparent,
+                Content = new Entry
+                {
+                    Text = "",
+                    Placeholder = placeholder,
+                    FontAttributes = FontAttributes.Italic,
+                    MaxLength = 200,
+                    BackgroundColor = Color.FromHex("#3B3533"),
+                    PlaceholderColor = Colors.White,
+                    WidthRequest = 700
+                }
             };
 
-            var numberStep = new Entry
+            // Obs³uga usuwania kroku
+            removeButton.Clicked += (s, e) =>
             {
-                Text = _stepCount.ToString(),
-                FontSize = 30,
-                FontAttributes = FontAttributes.Bold,
-                Keyboard = Keyboard.Numeric,
-                BackgroundColor = Color.FromHex("#3B3533"),
-                WidthRequest = 40
+                StepsList.Children.Remove(layout);
+                _stepCount -= 1;
             };
 
-            removeButton.Clicked += (s, e) => StepsList.Children.Remove(layout);
-
+            // Dodanie do layoutu
             layout.Children.Add(removeButton);
-            layout.Children.Add(numberStep);
-            layout.Children.Add(stepEntry);
-
+            layout.Children.Add(stepEntryFrame);
 
             StepsList.Children.Add(layout);
         }
 
-        private bool ValidAddStep()
+        private bool ValidAddStep(string step)
         {
             bool isValid = true;
 
-            // Walidacja numeru kroku
-            if (string.IsNullOrWhiteSpace(StepNumberLabel.Text) || !int.TryParse(StepNumberLabel.Text, out int stepNumber))
+            if (string.IsNullOrWhiteSpace(step))
             {
-                StepNumberLabel.BackgroundColor = Colors.Red;
+                StepEntryFrame.BorderColor = Colors.Red;
                 isValid = false;
             }
             else
             {
-                StepNumberLabel.BackgroundColor = Colors.Transparent;
-            }
-
-            // Walidacja opisu kroku
-            if (string.IsNullOrWhiteSpace(StepEntry.Text))
-            {
-                StepEntry.BackgroundColor = Colors.Red;
-                isValid = false;
-            }
-            else
-            {
-                StepEntry.BackgroundColor = Colors.Transparent;
+                StepEntryFrame.BorderColor = Colors.Transparent;
             }
             return isValid;
-        }
-
-        // Usuwanie pierwszego sk³adnika
-        private void OnRemoveIngredientClicked(object sender, EventArgs e)
-        {
-            FirstIngredientRow.IsVisible = false;
-        }
-
-        // Usuwanie pierwszego kroku
-        private void OnRemoveStepClicked(object sender, EventArgs e)
-        {
-            StepRow.IsVisible = false;
         }
 
         //Zapis Przepisu
         private async void OnSaveRecipeClicked(object sender, EventArgs e)
         {
+            if (!ValidationAddIngredient()) return;
+            
 
-            var result = await _baseRepository.AddRecipeAsync(_newRecipe);
+            foreach (var step in StepsList.Children)
+            {
+                if (step is HorizontalStackLayout row)
+                {
+                    // Pobierz Entry z nazw¹ sk³adnika
+                    var stepFrame = row.Children[1] as Frame;
+                    var stepEntry = stepFrame?.Content as Entry;
+                    var stepName = stepEntry?.Text;
 
-            if (result)
-            {
-                // Sukces
+                    if (!ValidAddStep(stepName)) continue;
+                }
             }
-            else
-            {
-                // Obs³uga b³êdu
-            }
+
+            //// Dodanie nowego sk³adnika do modelu
+            //var newIngredient = new Ingredient
+            //{
+            //    Name = IngredientEntry.Text,
+            //    Quantity = double.Parse(IngredientAmount.Text),
+            //    Unit = IngredientUnitPicker.SelectedItem.ToString()
+            //};
+
+            //_newRecipe.Ingredients.Add(newIngredient);
+
+            //// Dodanie nowego sk³adnika do modelu
+            //var newInstructionStep = new InstructionStep
+            //{
+            //    StepNumber = _stepCount,
+            //    Description = StepEntry.Text
+            //};
+
+            //_newRecipe.InstructionSteps.Add(newInstructionStep);
+
+
+            //var result = await _baseRepository.AddRecipeAsync(_newRecipe);
+
+            //if (result)
+            //{
+            //    // Sukces
+            //}
+            //else
+            //{
+            //    // Obs³uga b³êdu
+            //}
         }
 
 
