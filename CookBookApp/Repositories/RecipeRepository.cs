@@ -59,14 +59,6 @@ namespace CookBookApp.Repositories
                 .Include(a => a.Recipes)
                 .ToListAsync();
 
-            //foreach (var author in authorsWithRecipes)
-            //{
-            //    Console.WriteLine($"Autor: {author.Name}");
-            //    foreach (var recipe in author.Recipes)
-            //    {
-            //        Console.WriteLine($"  - Przepis: {recipe.RecipeName}");
-            //    }
-            //}
             return authorsWithRecipes;
         }
 
@@ -85,19 +77,12 @@ namespace CookBookApp.Repositories
             return recipes;
         }
 
-        public async Task<Recipe> GetRecipeAsync(int recipeID)
+        public async Task<Recipe?> GetRecipeByIdAsync(int recipeId)
         {
-            int recipeId = recipeID;
-
-            var recipe = await _dbContext.Recipes
-                .Include(r => r.Author)
+            return await _dbContext.Recipes
+                .Include(r => r.Ingredients)
+                .Include(r => r.InstructionSteps)
                 .FirstOrDefaultAsync(r => r.Id == recipeId);
-
-            //if (recipe != null)
-            //{
-            //    Console.WriteLine($"Przepis: {recipe.RecipeName}, Autor: {recipe.Author.Name}");
-            //}
-            return recipe;
         }
     }
 }

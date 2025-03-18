@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
 namespace CookBookApp.Models
 {
@@ -10,35 +9,37 @@ namespace CookBookApp.Models
     {
         [Key]
         public int Id { get; set; }
-        public int AuthorId { get; set; }
-        public Author Author { get; set; }
-        public string RecipeName { get; set; } // Nazwa przepisu
-        public string Description { get; set; } // Krótki opis
-        public int PrepTimeMinutes { get; set; } // Czas przygotowania
-        public int CookTimeMinutes { get; set; } // Czas gotowania
-        public int Servings { get; set; } // Ilość porcji
-        public DifficultyLevel Difficulty { get; set; } // Enum: Easy, Medium, Hard
+
+        public int? AuthorId { get; set; } // Opcjonalne
+
+        public Author? Author { get; set; }
+
+        [Required]
+        public string RecipeName { get; set; } = string.Empty; // NOT NULL, wymagane
+
+        public string? Description { get; set; } // Opcjonalny opis
+
+        public int? PrepTimeMinutes { get; set; } // Opcjonalnie
+
+        public int? CookTimeMinutes { get; set; } // Opcjonalnie
+
+        public int? Servings { get; set; } // Opcjonalnie
+
+        public DifficultyLevel? Difficulty { get; set; } // Opcjonalnie
+
+        // Relacja do Ingredients
         public List<Ingredient> Ingredients { get; set; } = new();
+
+        // Relacja do InstructionSteps
         public List<InstructionStep> InstructionSteps { get; set; } = new();
-        public List<string> Tags { get; set; } = new(); // Np. "wegetariańskie", "bezglutenowe"
-        public string ImageUrl { get; set; } // Link lub ścieżka do zdjęcia
-        public DateTime CreatedDate { get; set; }
-        public int Rating { get; set; } // Opcjonalnie: ocena przepisu (1-5)
 
-        // Możesz dodać: Ulubione, Kategoria, Autor, itp.
-    }
+        public List<string>? Tags { get; set; } = new(); // Opcjonalne (można później przemyśleć relację tabeli Tags)
 
-    public class Ingredient
-    {
-        public string Name { get; set; }
-        public double Quantity { get; set; }
-        public string Unit { get; set; }
-    }
+        public string? ImageUrl { get; set; } // Opcjonalny link do zdjęcia
 
-    public class InstructionStep
-    {
-        public int StepNumber { get; set; }
-        public string Description { get; set; }
+        public DateTime? CreatedDate { get; set; } // Opcjonalna data
+
+        public int? Rating { get; set; } // Opcjonalna ocena
     }
 
     public enum DifficultyLevel

@@ -282,10 +282,16 @@ namespace CookBookApp
         {
             if (!ValidateAll()) return;
 
-            int _stepCount = 0;
-            var newRecipe = new Recipe { RecipeName = RecipeNameEntry.Text };
+            int stepCount = 0;
+            var newRecipe = new Recipe
+            {
+                RecipeName = RecipeNameEntry.Text,
+                Ingredients = new List<Ingredient>(),
+                InstructionSteps = new List<InstructionStep>(),
+                CreatedDate = DateTime.Now // Mo¿esz ustawiæ inne wartoœci domyœlne
+            };
 
-            // Dodanie nowego sk³adnika do modelu
+            // Dodanie sk³adników
             foreach (var ingredient in IngredientsList.Children)
             {
                 if (ingredient is HorizontalStackLayout row)
@@ -294,21 +300,23 @@ namespace CookBookApp
                     string? ingredientName, amountValue, selectedUnit;
                     GetIngredientDateFromEntry(row, out ingredientFrame, out ingredientName, out amountFrame, out amountValue, out pickerFrame, out selectedUnit);
 
-                    var newIngredient = new Ingredient
+                    if (!string.IsNullOrWhiteSpace(ingredientName) && double.TryParse(amountValue, out double quantity) && !string.IsNullOrWhiteSpace(selectedUnit))
                     {
-                        Name = ingredientName,
-                        Quantity = double.Parse(amountValue),
-                        Unit = selectedUnit
-                    };
+                        var newIngredient = new Ingredient
+                        {
+                            Name = ingredientName,
+                            Quantity = quantity,
+                            Unit = selectedUnit
+                        };
 
-                    _newRecipe.Ingredients.Add(newIngredient);
+                        newRecipe.Ingredients.Add(newIngredient);
+                    }
                 }
             }
 
-            // Dodanie nowego kroku do modelu
+            // Dodanie kroków
             foreach (var step in StepsList.Children)
             {
-                _stepCount += 1;
                 if (step is HorizontalStackLayout row)
                 {
                     var stepFrame = row.Children[1] as Frame;
@@ -317,23 +325,26 @@ namespace CookBookApp
 
                     if (!string.IsNullOrWhiteSpace(stepDescription))
                     {
+                        stepCount++;
+
                         var newInstructionStep = new InstructionStep
                         {
-                            StepNumber = _stepCount,
-                            Description = StepEntry.Text
+                            StepNumber = stepCount,
+                            Description = stepDescription
                         };
 
-                        _newRecipe.InstructionSteps.Add(newInstructionStep);
+                        newRecipe.InstructionSteps.Add(newInstructionStep);
                     }
                 }
             }
 
-            // Zapis do bazy
+            // Zapis do bazy danych
             var result = await _baseRepository.SaveRecipeAsync(newRecipe);
 
             if (result)
             {
                 await DisplayAlert("Sukces", "Przepis zapisany!", "OK");
+                // Opcjonalnie: wyczyœæ formularz
             }
             else
             {

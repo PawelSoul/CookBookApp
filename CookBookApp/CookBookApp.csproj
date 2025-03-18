@@ -102,6 +102,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\CookBookApp.Data\CookBookApp.Data.csproj" />
+	  <ProjectReference Include="..\CookBookApp.Migrations\CookBookApp.Migrations.csproj" />
 	</ItemGroup>
 
 </Project>

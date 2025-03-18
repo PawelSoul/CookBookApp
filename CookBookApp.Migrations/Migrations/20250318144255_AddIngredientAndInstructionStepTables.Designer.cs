@@ -4,6 +4,7 @@ using CookBookApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CookBookApp.Migrations.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250318144255_AddIngredientAndInstructionStepTables")]
+    partial class AddIngredientAndInstructionStepTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,60 +46,6 @@ namespace CookBookApp.Migrations.Migrations
                     b.ToTable("Authors");
                 });
 
-            modelBuilder.Entity("CookBookApp.Models.Ingredient", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("Quantity")
-                        .HasColumnType("float");
-
-                    b.Property<int>("RecipeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Unit")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RecipeId");
-
-                    b.ToTable("Ingredients");
-                });
-
-            modelBuilder.Entity("CookBookApp.Models.InstructionStep", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("RecipeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StepNumber")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RecipeId");
-
-                    b.ToTable("InstructionSteps");
-                });
-
             modelBuilder.Entity("CookBookApp.Models.Recipe", b =>
                 {
                     b.Property<int>("Id")
@@ -123,6 +72,14 @@ namespace CookBookApp.Migrations.Migrations
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Ingredients")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("InstructionSteps")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("PrepTimeMinutes")
                         .HasColumnType("int");
 
@@ -146,28 +103,6 @@ namespace CookBookApp.Migrations.Migrations
                     b.ToTable("Recipes");
                 });
 
-            modelBuilder.Entity("CookBookApp.Models.Ingredient", b =>
-                {
-                    b.HasOne("CookBookApp.Models.Recipe", "Recipe")
-                        .WithMany("Ingredients")
-                        .HasForeignKey("RecipeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Recipe");
-                });
-
-            modelBuilder.Entity("CookBookApp.Models.InstructionStep", b =>
-                {
-                    b.HasOne("CookBookApp.Models.Recipe", "Recipe")
-                        .WithMany("InstructionSteps")
-                        .HasForeignKey("RecipeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Recipe");
-                });
-
             modelBuilder.Entity("CookBookApp.Models.Recipe", b =>
                 {
                     b.HasOne("CookBookApp.Models.Author", "Author")
@@ -181,13 +116,6 @@ namespace CookBookApp.Migrations.Migrations
             modelBuilder.Entity("CookBookApp.Models.Author", b =>
                 {
                     b.Navigation("Recipes");
-                });
-
-            modelBuilder.Entity("CookBookApp.Models.Recipe", b =>
-                {
-                    b.Navigation("Ingredients");
-
-                    b.Navigation("InstructionSteps");
                 });
 #pragma warning restore 612, 618
         }
