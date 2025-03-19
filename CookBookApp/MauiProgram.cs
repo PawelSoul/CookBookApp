@@ -4,6 +4,7 @@ using CookBookApp.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using CommunityToolkit.Maui; // Dodaj to!
 
 namespace CookBookApp
 {
@@ -15,6 +16,7 @@ namespace CookBookApp
 
             builder
                 .UseMauiApp<App>()
+                .UseMauiCommunityToolkit() // Dodaj to!
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -40,7 +42,6 @@ namespace CookBookApp
             builder.Logging.AddDebug();
 #endif
 
-            // --- KLUCZOWA ZMIANA --- tylko jedno builder.Build()
             var app = builder.Build();
 
             // Automatyczne migracje (przy starcie aplikacji)
@@ -50,7 +51,7 @@ namespace CookBookApp
                 dbContext.Database.Migrate();
             }
 
-            return app; // Zwracamy już zbudowaną app
+            return app;
         }
     }
 }
