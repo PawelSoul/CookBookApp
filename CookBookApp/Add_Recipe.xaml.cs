@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.Net.WebSockets;
 using CookBookApp.Models;
 using CookBookApp.Repositories.Interfaces;
+using Microsoft.Maui.Storage;
 
 namespace CookBookApp
 {
@@ -10,6 +11,8 @@ namespace CookBookApp
         IBaseRepository _baseRepository;
 
         Recipe _newRecipe = new Recipe();
+
+        private string _imageFilePath = null;
 
         public Add_Recipe(IBaseRepository baseRepository)// Konstruktor, który dostaje DbContext z DI
         {
@@ -29,6 +32,27 @@ namespace CookBookApp
         private void OnAddStepsClicked(object sender, EventArgs e)
         {
             AddStepEntry("Dodaj krok ...", "0");
+        }
+        private async void OnAddImageClicked(object sender, EventArgs e)
+        {
+            try
+            {
+                var result = await FilePicker.PickAsync(new PickOptions
+                {
+                    PickerTitle = "Wybierz zdjêcie",
+                    FileTypes = FilePickerFileType.Images
+                });
+
+                if (result != null)
+                {
+                    _imageFilePath = result.FullPath;
+                    RecipeImage.Source = ImageSource.FromFile(_imageFilePath);
+                }
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("B³¹d", $"Nie uda³o siê za³adowaæ zdjêcia: {ex.Message}", "OK");
+            }
         }
 
         // Funkcja do dodawania nowego sk³adnika z gramatur¹
@@ -286,6 +310,7 @@ namespace CookBookApp
             var newRecipe = new Recipe
             {
                 RecipeName = RecipeNameEntry.Text,
+                ImageUrl = _imageFilePath,
                 Ingredients = new List<Ingredient>(),
                 InstructionSteps = new List<InstructionStep>(),
                 CreatedDate = DateTime.Now // Mo¿esz ustawiæ inne wartoœci domyœlne
@@ -337,6 +362,9 @@ namespace CookBookApp
                     }
                 }
             }
+
+
+
 
             // Zapis do bazy danych
             var result = await _baseRepository.SaveRecipeAsync(newRecipe);

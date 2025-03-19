@@ -71,6 +71,15 @@
 
             <Button x:Name="AddStepButton" Text="+" Clicked="OnAddStepsClicked" FontSize="24" TextColor="White" BackgroundColor="#3B3533" BorderColor="White" BorderWidth="1" HeightRequest="44"/>
 
+            <VerticalStackLayout Padding="5" Spacing="20">
+                <!-- Pole podglądu zdjęcia -->
+                <Image x:Name="RecipeImage" HeightRequest="200" WidthRequest="352" Aspect="AspectFill" BackgroundColor="#3B3533" />
+
+                <!-- Przycisk do wyboru zdjęcia -->
+                <Button Text="Dodaj zdjęcie" Clicked="OnAddImageClicked" BackgroundColor="#A85400" TextColor="White" CornerRadius="10"/>
+            </VerticalStackLayout>
+
+
             <Button Text="Zapisz przepis" TextColor="White" HorizontalOptions="Center" Clicked="OnSaveRecipeClicked" BackgroundColor="#8A543D" BorderColor="White" BorderWidth="2"/>
         </VerticalStackLayout>
     </ScrollView>
