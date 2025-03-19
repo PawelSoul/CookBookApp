@@ -88,12 +88,46 @@ namespace CookBookApp
 
             foreach (var recipe in foundRecipes)
             {
-                SearchResultsLayout.Children.Add(new Label
+                var recipeCard = new Frame
                 {
-                    Text = recipe.RecipeName,
-                    TextColor = Colors.Black,
-                    FontSize = 16
-                });
+                    BackgroundColor = Color.FromArgb("#F5F5F5"),
+                    CornerRadius = 15,
+                    Padding = 10,
+                    Margin = new Thickness(5),
+                    Content = new VerticalStackLayout
+                    {
+                        Spacing = 5,
+                        Children =
+                        {
+                            new Label
+                            {
+                                Text = recipe.RecipeName,
+                                FontAttributes = FontAttributes.Bold,
+                                FontSize = 18,
+                                TextColor = Colors.Black
+                            },
+                            new Label
+                            {
+                                Text = $"Autor: {recipe.Author}",
+                                FontSize = 14,
+                                TextColor = Colors.Gray
+                            },
+                            new Button
+                            {
+                                Text = "Zobacz przepis",
+                                BackgroundColor = Color.FromArgb("#A85400"),
+                                TextColor = Colors.White,
+                                CornerRadius = 10,
+                                Command = new Command(async () =>
+                                {
+                                    await Navigation.PushAsync(new RecipeDetailPage(recipe));
+                                })
+                            }
+                        }
+                    }
+                };
+
+                SearchResultsLayout.Children.Add(recipeCard);
             }
         }
     }
