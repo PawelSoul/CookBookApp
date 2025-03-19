@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using CookBookApp.Data;
+using CookBookApp.Models;
 using CookBookApp.Repositories;
 using CookBookApp.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +14,7 @@ namespace CookBookApp
     public partial class MainPage : ContentPage
     {
         private readonly IBaseRepository _IBaseRepository;
+
         public MainPage(IBaseRepository recipeRepository)
         {
             InitializeComponent();
@@ -27,7 +30,6 @@ namespace CookBookApp
         // Logika filtrowania przepisów
         private void ApplyFilters()
         {
-            // Pobranie listy zaznaczonych filtrów (przykładowa implementacja)
             var selectedFilters = new List<string>();
 
             foreach (var child in GetAllCheckBoxes(this))
@@ -38,11 +40,10 @@ namespace CookBookApp
                 }
             }
 
-            // Tutaj można dodać logikę wyszukiwania na podstawie `selectedFilters`
             Console.WriteLine("Zastosowane filtry: " + string.Join(", ", selectedFilters));
         }
 
-        // Metoda pomocnicza do pobrania wszystkich CheckBox na stronie
+        // Pobranie wszystkich CheckBox
         private IEnumerable<CheckBox> GetAllCheckBoxes(VisualElement parent)
         {
             if (parent is CheckBox checkBox)
@@ -59,29 +60,40 @@ namespace CookBookApp
                 }
             }
         }
+
         private async void OnAddRecipeClicked(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new Add_Recipe(_IBaseRepository));
         }
+
         private async void OnSearchRecipeClicked(object sender, EventArgs e)
         {
-            string recipeName = RecipeNameEntry.Text;
-            if (string.IsNullOrWhiteSpace(recipeName))
+            string searchText = RecipeNameEntry.Text?.ToLower();
+
+            SearchResultsLayout.Children.Clear();
+
+            if (string.IsNullOrWhiteSpace(searchText))
             {
-                await DisplayAlert("Błąd", "Wpisz nazwę przepisu do wyszukania.", "OK");
+                SearchResultsLayout.Children.Add(new Label { Text = "Wpisz nazwę przepisu.", TextColor = Colors.Red });
                 return;
             }
 
-            var foundRecipes = await _IBaseRepository.FindRecipes(recipeName);
+            var foundRecipes = await _IBaseRepository.FindRecipes(searchText);
 
-            if (foundRecipes.Any())
+            if (!foundRecipes.Any())
             {
-                string result = string.Join("\n", foundRecipes.Select(r => r.RecipeName));
-                await DisplayAlert("Znalezione przepisy", result, "OK");
+                SearchResultsLayout.Children.Add(new Label { Text = "Nie znaleziono przepisów.", TextColor = Colors.Gray });
+                return;
             }
-            else
+
+            foreach (var recipe in foundRecipes)
             {
-                await DisplayAlert("Brak wyników", "Nie znaleziono przepisu o podanej nazwie.", "OK");
+                SearchResultsLayout.Children.Add(new Label
+                {
+                    Text = recipe.RecipeName,
+                    TextColor = Colors.Black,
+                    FontSize = 16
+                });
             }
         }
     }

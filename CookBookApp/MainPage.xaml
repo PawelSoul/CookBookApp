@@ -222,7 +222,9 @@
 
             <!-- Wyniki wyszukiwania -->
             <Frame Grid.Column="1" BackgroundColor="White" CornerRadius="20" Padding="10" HasShadow="True">
-                <Label Text="Wyniki wyszukiwania pojawią się tutaj..." TextColor="#A85400" HorizontalOptions="Center" VerticalOptions="Center"/>
+                <ScrollView>
+                    <VerticalStackLayout x:Name="SearchResultsLayout" Spacing="10" />
+                </ScrollView>
             </Frame>
         </Grid>
     </Grid>
