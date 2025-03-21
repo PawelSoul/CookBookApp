@@ -11,6 +11,101 @@
             <Label Text="Nazwa przepisu:" FontSize="18" FontAttributes="Bold"/>
             <Entry x:Name="RecipeNameEntry" Placeholder="Wpisz nazwę przepisu" MaxLength="200" BackgroundColor="#3B3533" PlaceholderColor="White"/>
 
+            <Grid ColumnSpacing="10" Padding="0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Rodzaj dania -->
+                <VerticalStackLayout Grid.Column="0">
+                    <Label Text="Rodzaj dania:" FontSize="14" TextColor="White"/>
+                    <Picker x:Name="DishTypePickerRodzajDania" Title="Wybierz rodzaj dania" BackgroundColor="#3B3533" TextColor="White">
+                        <Picker.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                                <x:String>Śniadania</x:String>
+                                <x:String>Przystawki i przekąski</x:String>
+                                <x:String>Zupy</x:String>
+                                <x:String>Dania główne</x:String>
+                                <x:String>Desery</x:String>
+                                <x:String>Pieczywo i wypieki</x:String>
+                                <x:String>Napoje</x:String>
+                                <x:String>Sosy i dodatki</x:String>
+                            </x:Array>
+                        </Picker.ItemsSource>
+                    </Picker>
+                </VerticalStackLayout>
+
+                <!-- Kuchnia świata -->
+                <VerticalStackLayout Grid.Column="1">
+                    <Label Text="Kuchnia świata:" FontSize="14" TextColor="White"/>
+                    <Picker x:Name="CuisinePickerKuchniaSwiata" Title="Wybierz kuchnię" BackgroundColor="#3B3533" TextColor="White">
+                        <Picker.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                                <x:String>Polska</x:String>
+                                <x:String>Włoska</x:String>
+                                <x:String>Francuska</x:String>
+                                <x:String>Azjatycka</x:String>
+                                <x:String>Meksykańska</x:String>
+                                <x:String>Śródziemnomorska</x:String>
+                            </x:Array>
+                        </Picker.ItemsSource>
+                    </Picker>
+                </VerticalStackLayout>
+
+                <!-- Główny składnik -->
+                <VerticalStackLayout Grid.Column="2">
+                    <Label Text="Główny składnik:" FontSize="14" TextColor="White"/>
+                    <Picker x:Name="MainIngredientPickerGlownySkladnik" Title="Wybierz składnik" BackgroundColor="#3B3533" TextColor="White">
+                        <Picker.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                                <x:String>Mięsne</x:String>
+                                <x:String>Rybne i owoce morza</x:String>
+                                <x:String>Wegetariańskie</x:String>
+                                <x:String>Wegańskie</x:String>
+                                <x:String>Bezglutenowe</x:String>
+                            </x:Array>
+                        </Picker.ItemsSource>
+                    </Picker>
+                </VerticalStackLayout>
+
+                <!-- Okazja -->
+                <VerticalStackLayout Grid.Column="3">
+                    <Label Text="Okazja:" FontSize="14" TextColor="White"/>
+                    <Picker x:Name="OccasionPickerOkazja" Title="Wybierz okazję" BackgroundColor="#3B3533" TextColor="White">
+                        <Picker.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                                <x:String>Codzienne obiady</x:String>
+                                <x:String>Świąteczne dania</x:String>
+                                <x:String>Imprezowe przekąski</x:String>
+                                <x:String>Grillowe specjały</x:String>
+                                <x:String>Dania na wynos i do lunchboxa</x:String>
+                            </x:Array>
+                        </Picker.ItemsSource>
+                    </Picker>
+                </VerticalStackLayout>
+
+                <!-- Poziom trudności -->
+                <VerticalStackLayout Grid.Column="4">
+                    <Label Text="Poziom trudności:" FontSize="14" TextColor="White"/>
+                    <Picker x:Name="OccasionPickerPoziomTrudnosci" Title="Wybierz" BackgroundColor="#3B3533" TextColor="White">
+                        <Picker.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                                <x:String>Easy</x:String>
+                                <x:String>Medium</x:String>
+                                <x:String>Hard</x:String>
+                            </x:Array>
+                        </Picker.ItemsSource>
+                    </Picker>
+                </VerticalStackLayout>
+
+            </Grid>
+
+
+
             <!-- Składniki -->
             <Label Text="Składniki:" FontSize="18" FontAttributes="Bold"/>
             <ScrollView>
