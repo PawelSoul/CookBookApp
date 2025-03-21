@@ -18,7 +18,7 @@ namespace CookBookApp
                     Padding = 20,
                     Spacing = 20,
                     Children =
-                    {
+                    { 
                         new Label
                         {
                             Text = recipe.RecipeName,
