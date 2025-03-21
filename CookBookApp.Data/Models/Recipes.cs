@@ -40,6 +40,14 @@ namespace CookBookApp.Models
         public DateTime? CreatedDate { get; set; } // Opcjonalna data
 
         public int? Rating { get; set; } // Opcjonalna ocena
+
+        public string? DishType { get; set; } // Rodzaj dania (np. Śniadania, Zupy itd.)
+
+        public string? Cuisine { get; set; } // Kuchnia świata (np. Polska, Włoska)
+
+        public string? MainIngredient { get; set; } // Główny składnik (Mięsne, Rybne, itd.)
+
+        public string? Occasion { get; set; } // Okazja (Codzienne obiady, Święta itd.)
     }
 
     public enum DifficultyLevel
