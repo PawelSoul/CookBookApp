@@ -3,43 +3,92 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="CookBookApp.MainPage"
-             BackgroundColor="#7A5C52">
+             BackgroundColor="#A87465">
 
     <ContentPage.Resources>
         <Style x:Key="FilterSectionStyle" TargetType="Frame">
-            <Setter Property="BackgroundColor" Value="#A87465"/>
+            <Setter Property="BackgroundColor" Value="#824F39"/>
             <Setter Property="CornerRadius" Value="20"/>
             <Setter Property="Padding" Value="10"/>
             <Setter Property="HasShadow" Value="False"/>
             <Setter Property="Margin" Value="5"/>
         </Style>
+
+        <Style x:Key="HoverButtonStyle" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="#A85400" />
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="Margin" Value="10" />
+            <Setter Property="HeightRequest" Value="45" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="BorderColor" Value="Black" />
+            <Setter Property="BorderWidth" Value="1" />
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup Name="CommonStates">
+                        <VisualState Name="Normal" />
+                        <VisualState Name="PointerOver">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" Value="#BF5E00" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState Name="Pressed">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" Value="#8C3F00" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
+
+        <ControlTemplate x:Key="ExpanderHeaderTemplate">
+            <Frame Style="{StaticResource FilterSectionStyle}">
+                <HorizontalStackLayout HorizontalOptions="Center">
+                    <Label Text="{TemplateBinding Content}" 
+                       FontAttributes="Bold" 
+                       TextColor="White"
+                       x:Name="HeaderLabel">
+                        <Label.GestureRecognizers>
+                            <PointerGestureRecognizer PointerEntered="OnHeaderPointerEntered" PointerExited="OnHeaderPointerExited" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Label x:Name="ArrowLabel"
+                       Text="▼"
+                       FontSize="16"
+                       TextColor="White"
+                       Margin="5,0,0,0"
+                       VerticalOptions="Center" />
+                </HorizontalStackLayout>
+            </Frame>
+        </ControlTemplate>
     </ContentPage.Resources>
 
     <Grid RowDefinitions="Auto,Auto,*" ColumnDefinitions="*">
-        <!-- Menu Top -->
-        <Frame BackgroundColor="#D8B4A0" Padding="10" Margin="10" CornerRadius="20">
+        <Frame BackgroundColor="#D8B4A0" Padding="10" Margin="10" CornerRadius="35">
             <Grid ColumnDefinitions="Auto, *" VerticalOptions="Center" HorizontalOptions="FillAndExpand" ColumnSpacing="20">
                 <Button Grid.Column="0"
-                Text="Wyszukaj"
-                BackgroundColor="#A85400"
-                TextColor="White"
-                WidthRequest="100"
-                Clicked="OnSearchRecipeClicked"
-                VerticalOptions="Center"/>
+                        Text="Wyszukaj"
+                        BackgroundColor="#944A00"
+                        TextColor="White"
+                        WidthRequest="100"
+                        Style="{StaticResource HoverButtonStyle}"
+                        Clicked="OnSearchRecipeClicked"
+                        VerticalOptions="Center"/>
 
                 <Entry Grid.Column="1"
-                   x:Name="RecipeNameEntry"
-                   Placeholder="Wpisz nazwę przepisu..."
-                   FontSize="16"
-                   BackgroundColor="White"
-                   TextColor="Black"
-                   HorizontalTextAlignment="Start"
-                   HorizontalOptions="FillAndExpand"
-                   VerticalOptions="Center"/>
+                       x:Name="RecipeNameEntry"
+                       Placeholder="Wpisz nazwę przepisu..."
+                       FontSize="16"
+                       BackgroundColor="White"
+                       TextColor="Black"
+                       HorizontalTextAlignment="Start"
+                       HorizontalOptions="FillAndExpand"
+                       Margin="0,0,30,0"
+                       VerticalOptions="Center"/>
             </Grid>
         </Frame>
 
-        <!-- Dodaj Przepis -->
         <Button Grid.Row="1"
                 Text="Dodaj Nowy Przepis"
                 BackgroundColor="#A85400"
@@ -48,6 +97,7 @@
                 Margin="10"
                 HeightRequest="45"
                 CornerRadius="10"
+                Style="{StaticResource HoverButtonStyle}"
                 Clicked="OnAddRecipeClicked"/>
 
         <!-- Główna sekcja: Filtry + Wyniki -->
@@ -55,170 +105,345 @@
             <!-- Filtry -->
             <ScrollView>
                 <VerticalStackLayout Spacing="10">
-                    <!-- RODZAJ DANIA -->
-                    <toolkit:Expander>
+
+                    <!-- === RODZAJ DANIA === -->
+                    <toolkit:Expander x:Name="RodzajDaniaExpander" ExpandedChanged="OnRodzajDaniaExpandedChanged">
                         <toolkit:Expander.Header>
                             <Frame Style="{StaticResource FilterSectionStyle}">
-                                <Label Text="RODZAJ DANIA" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center"/>
+                                <HorizontalStackLayout HorizontalOptions="Center">
+                                    <Label Text="RODZAJ DANIA"
+                               FontAttributes="Bold"
+                               TextColor="White"
+                               x:Name="RodzajDaniaLabel">
+                                        <Label.GestureRecognizers>
+                                            <PointerGestureRecognizer PointerEntered="OnRodzajDaniaPointerEntered"
+                                                          PointerExited="OnRodzajDaniaPointerExited" />
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                    <Label x:Name="RodzajDaniaArrow"
+                                           Text="▼"
+                                           FontSize="10"
+                                           TextColor="White"
+                                           Margin="10,0,0,0"
+                                           VerticalOptions="Center" />
+                                </HorizontalStackLayout>
                             </Frame>
                         </toolkit:Expander.Header>
+
                         <VerticalStackLayout Margin="20,0">
-                            <HorizontalStackLayout Margin="2,1,0,1" Spacing="8">
+                            <HorizontalStackLayout Margin="3,0,0,0" Spacing="8">
+                                <HorizontalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnFilterTapped"/>
+                                </HorizontalStackLayout.GestureRecognizers>
                                 <CheckBox/>
                                 <Label Text="Śniadania" TextColor="Black" VerticalOptions="Center"/>
                             </HorizontalStackLayout>
-                            <HorizontalStackLayout Margin="2,1,0,1" Spacing="8">
+
+                            <HorizontalStackLayout Margin="3,0,0,0" Spacing="8">
+                                <HorizontalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnFilterTapped"/>
+                                </HorizontalStackLayout.GestureRecognizers>
                                 <CheckBox/>
                                 <Label Text="Przystawki i przekąski" TextColor="Black" VerticalOptions="Center"/>
                             </HorizontalStackLayout>
-                            <HorizontalStackLayout Margin="2,1,0,1" Spacing="8">
+
+                            <HorizontalStackLayout Margin="3,0,0,0" Spacing="8">
+                                <HorizontalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnFilterTapped"/>
+                                </HorizontalStackLayout.GestureRecognizers>
                                 <CheckBox/>
                                 <Label Text="Zupy" TextColor="Black" VerticalOptions="Center"/>
                             </HorizontalStackLayout>
-                            <HorizontalStackLayout Margin="2,1,0,1" Spacing="8">
+
+                            <HorizontalStackLayout Margin="3,0,0,0" Spacing="8">
+                                <HorizontalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnFilterTapped"/>
+                                </HorizontalStackLayout.GestureRecognizers>
                                 <CheckBox/>
                                 <Label Text="Dania główne" TextColor="Black" VerticalOptions="Center"/>
                             </HorizontalStackLayout>
-                            <HorizontalStackLayout Margin="2,1,0,1" Spacing="8">
+
+                            <HorizontalStackLayout Margin="3,0,0,0" Spacing="8">
+                                <HorizontalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnFilterTapped"/>
+                                </HorizontalStackLayout.GestureRecognizers>
                                 <CheckBox/>
                                 <Label Text="Desery" TextColor="Black" VerticalOptions="Center"/>
                             </HorizontalStackLayout>
-                            <HorizontalStackLayout Margin="2,1,0,1" Spacing="8">
+
+                            <HorizontalStackLayout Margin="3,0,0,0" Spacing="8">
+                                <HorizontalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnFilterTapped"/>
+                                </HorizontalStackLayout.GestureRecognizers>
                                 <CheckBox/>
                                 <Label Text="Pieczywo i wypieki" TextColor="Black" VerticalOptions="Center"/>
                             </HorizontalStackLayout>
-                            <HorizontalStackLayout Margin="2,1,0,1" Spacing="8">
+
+                            <HorizontalStackLayout Margin="3,0,0,0" Spacing="8">
+                                <HorizontalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnFilterTapped"/>
+                                </HorizontalStackLayout.GestureRecognizers>
                                 <CheckBox/>
                                 <Label Text="Napoje" TextColor="Black" VerticalOptions="Center"/>
                             </HorizontalStackLayout>
-                            <HorizontalStackLayout Margin="2,1,0,1" Spacing="8">
+
+                            <HorizontalStackLayout Margin="3,0,0,0" Spacing="8">
+                                <HorizontalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnFilterTapped"/>
+                                </HorizontalStackLayout.GestureRecognizers>
                                 <CheckBox/>
                                 <Label Text="Sosy i dodatki" TextColor="Black" VerticalOptions="Center"/>
                             </HorizontalStackLayout>
+
                         </VerticalStackLayout>
                     </toolkit:Expander>
 
                     <!-- KUCHNIA ŚWIATA -->
-                    <toolkit:Expander>
+                    <!-- === KUCHNIA ŚWIATA === -->
+                    <toolkit:Expander x:Name="KuchniaExpander" ExpandedChanged="OnKuchniaExpandedChanged">
                         <toolkit:Expander.Header>
                             <Frame Style="{StaticResource FilterSectionStyle}">
-                                <Label Text="KUCHNIA ŚWIATA" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center"/>
+                                <HorizontalStackLayout HorizontalOptions="Center">
+                                    <Label Text="KUCHNIA ŚWIATA"
+                               FontAttributes="Bold"
+                               TextColor="White"
+                               x:Name="KuchniaLabel">
+                                        <Label.GestureRecognizers>
+                                            <PointerGestureRecognizer PointerEntered="OnKuchniaPointerEntered"
+                                                          PointerExited="OnKuchniaPointerExited" />
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                    <Label x:Name="KuchniaArrow"
+                                           Text="▼"
+                                           FontSize="10"
+                                           TextColor="White"
+                                           Margin="10,0,0,0"
+                                           VerticalOptions="Center" />
+                                </HorizontalStackLayout>
                             </Frame>
                         </toolkit:Expander.Header>
                         <VerticalStackLayout Margin="20,0">
-                            <HorizontalStackLayout Margin="2,1,0,1" Spacing="8">
+                            <HorizontalStackLayout Margin="3,0,0,0" Spacing="8">
+                                <HorizontalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnFilterTapped"/>
+                                </HorizontalStackLayout.GestureRecognizers>
                                 <CheckBox/>
                                 <Label Text="Polska" TextColor="Black" VerticalOptions="Center"/>
                             </HorizontalStackLayout>
-                            <HorizontalStackLayout Margin="2,1,0,1" Spacing="8">
+                            <HorizontalStackLayout Margin="3,0,0,0" Spacing="8">
+                                <HorizontalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnFilterTapped"/>
+                                </HorizontalStackLayout.GestureRecognizers>
                                 <CheckBox/>
                                 <Label Text="Włoska" TextColor="Black" VerticalOptions="Center"/>
                             </HorizontalStackLayout>
-                            <HorizontalStackLayout Margin="2,1,0,1" Spacing="8">
+                            <HorizontalStackLayout Margin="3,0,0,0" Spacing="8">
+                                <HorizontalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnFilterTapped"/>
+                                </HorizontalStackLayout.GestureRecognizers>
                                 <CheckBox/>
                                 <Label Text="Francuska" TextColor="Black" VerticalOptions="Center"/>
                             </HorizontalStackLayout>
-                            <HorizontalStackLayout Margin="2,1,0,1" Spacing="8">
+                            <HorizontalStackLayout Margin="3,0,0,0" Spacing="8">
+                                <HorizontalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnFilterTapped"/>
+                                </HorizontalStackLayout.GestureRecognizers>
                                 <CheckBox/>
                                 <Label Text="Azjatycka" TextColor="Black" VerticalOptions="Center"/>
                             </HorizontalStackLayout>
-                            <HorizontalStackLayout Margin="2,1,0,1" Spacing="8">
+                            <HorizontalStackLayout Margin="3,0,0,0" Spacing="8">
+                                <HorizontalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnFilterTapped"/>
+                                </HorizontalStackLayout.GestureRecognizers>
                                 <CheckBox/>
                                 <Label Text="Meksykańska" TextColor="Black" VerticalOptions="Center"/>
                             </HorizontalStackLayout>
-                            <HorizontalStackLayout Margin="2,1,0,1" Spacing="8">
+                            <HorizontalStackLayout Margin="3,0,0,0" Spacing="8">
+                                <HorizontalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnFilterTapped"/>
+                                </HorizontalStackLayout.GestureRecognizers>
                                 <CheckBox/>
                                 <Label Text="Śródziemnomorska" TextColor="Black" VerticalOptions="Center"/>
                             </HorizontalStackLayout>
                         </VerticalStackLayout>
                     </toolkit:Expander>
 
-                    <!-- GŁÓWNY SKŁADNIK -->
-                    <toolkit:Expander>
+                    <!-- === GŁÓWNY SKŁADNIK === -->
+                    <toolkit:Expander x:Name="SkladnikExpander" ExpandedChanged="OnSkladnikExpandedChanged">
                         <toolkit:Expander.Header>
                             <Frame Style="{StaticResource FilterSectionStyle}">
-                                <Label Text="GŁÓWNY SKŁADNIK" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center"/>
+                                <HorizontalStackLayout HorizontalOptions="Center">
+                                    <Label Text="GŁÓWNY SKŁADNIK"
+                               FontAttributes="Bold"
+                               TextColor="White"
+                               x:Name="SkladnikLabel">
+                                        <Label.GestureRecognizers>
+                                            <PointerGestureRecognizer PointerEntered="OnSkladnikPointerEntered"
+                                                          PointerExited="OnSkladnikPointerExited" />
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                    <Label x:Name="SkladnikArrow"
+                                           Text="▼"
+                                           FontSize="10"
+                                           TextColor="White"
+                                           Margin="10,0,0,0"
+                                           VerticalOptions="Center" />
+                                </HorizontalStackLayout>
                             </Frame>
                         </toolkit:Expander.Header>
                         <VerticalStackLayout Margin="20,0">
-                            <HorizontalStackLayout Margin="2,1,0,1" Spacing="8">
+                            <HorizontalStackLayout Margin="3,0,0,0" Spacing="8">
+                                <HorizontalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnFilterTapped"/>
+                                </HorizontalStackLayout.GestureRecognizers>
                                 <CheckBox/>
                                 <Label Text="Mięsne" TextColor="Black" VerticalOptions="Center"/>
                             </HorizontalStackLayout>
-                            <HorizontalStackLayout Margin="2,1,0,1" Spacing="8">
+                            <HorizontalStackLayout Margin="3,0,0,0" Spacing="8">
+                                <HorizontalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnFilterTapped"/>
+                                </HorizontalStackLayout.GestureRecognizers>
                                 <CheckBox/>
                                 <Label Text="Rybne i owoce morza" TextColor="Black" VerticalOptions="Center"/>
                             </HorizontalStackLayout>
-                            <HorizontalStackLayout Margin="2,1,0,1" Spacing="8">
+                            <HorizontalStackLayout Margin="3,0,0,0" Spacing="8">
+                                <HorizontalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnFilterTapped"/>
+                                </HorizontalStackLayout.GestureRecognizers>
                                 <CheckBox/>
                                 <Label Text="Wegetariańskie" TextColor="Black" VerticalOptions="Center"/>
                             </HorizontalStackLayout>
-                            <HorizontalStackLayout Margin="2,1,0,1" Spacing="8">
+                            <HorizontalStackLayout Margin="3,0,0,0" Spacing="8">
+                                <HorizontalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnFilterTapped"/>
+                                </HorizontalStackLayout.GestureRecognizers>
                                 <CheckBox/>
                                 <Label Text="Wegańskie" TextColor="Black" VerticalOptions="Center"/>
                             </HorizontalStackLayout>
-                            <HorizontalStackLayout Margin="2,1,0,1" Spacing="8">
+                            <HorizontalStackLayout Margin="3,0,0,0" Spacing="8">
+                                <HorizontalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnFilterTapped"/>
+                                </HorizontalStackLayout.GestureRecognizers>
                                 <CheckBox/>
                                 <Label Text="Bezglutenowe" TextColor="Black" VerticalOptions="Center"/>
                             </HorizontalStackLayout>
                         </VerticalStackLayout>
                     </toolkit:Expander>
 
-                    <!-- OKAZJA -->
-                    <toolkit:Expander>
+                    <!-- === OKAZJA === -->
+                    <toolkit:Expander x:Name="OkazjaExpander" ExpandedChanged="OnOkazjaExpandedChanged">
                         <toolkit:Expander.Header>
                             <Frame Style="{StaticResource FilterSectionStyle}">
-                                <Label Text="OKAZJA" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center"/>
+                                <HorizontalStackLayout HorizontalOptions="Center">
+                                    <Label Text="OKAZJA"
+                               FontAttributes="Bold"
+                               TextColor="White"
+                               x:Name="OkazjaLabel">
+                                        <Label.GestureRecognizers>
+                                            <PointerGestureRecognizer PointerEntered="OnOkazjaPointerEntered"
+                                                          PointerExited="OnOkazjaPointerExited" />
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                    <Label x:Name="OkazjaArrow"
+                                           Text="▼"
+                                           FontSize="10"
+                                           TextColor="White"
+                                           Margin="10,0,0,0"
+                                           VerticalOptions="Center" />
+                                </HorizontalStackLayout>
                             </Frame>
                         </toolkit:Expander.Header>
                         <VerticalStackLayout Margin="20,0">
-                            <HorizontalStackLayout Margin="2,1,0,1" Spacing="8">
+                            <HorizontalStackLayout Margin="3,0,0,0" Spacing="8">
+                                <HorizontalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnFilterTapped"/>
+                                </HorizontalStackLayout.GestureRecognizers>
                                 <CheckBox/>
                                 <Label Text="Codzienne obiady" TextColor="Black" VerticalOptions="Center"/>
                             </HorizontalStackLayout>
-                            <HorizontalStackLayout Margin="2,1,0,1" Spacing="8">
+                            <HorizontalStackLayout Margin="3,0,0,0" Spacing="8">
+                                <HorizontalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnFilterTapped"/>
+                                </HorizontalStackLayout.GestureRecognizers>
                                 <CheckBox/>
                                 <Label Text="Świąteczne dania" TextColor="Black" VerticalOptions="Center"/>
                             </HorizontalStackLayout>
-                            <HorizontalStackLayout Margin="2,1,0,1" Spacing="8">
+                            <HorizontalStackLayout Margin="3,0,0,0" Spacing="8">
+                                <HorizontalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnFilterTapped"/>
+                                </HorizontalStackLayout.GestureRecognizers>
                                 <CheckBox/>
                                 <Label Text="Imprezowe przekąski" TextColor="Black" VerticalOptions="Center"/>
                             </HorizontalStackLayout>
-                            <HorizontalStackLayout Margin="2,1,0,1" Spacing="8">
+                            <HorizontalStackLayout Margin="3,0,0,0" Spacing="8">
+                                <HorizontalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnFilterTapped"/>
+                                </HorizontalStackLayout.GestureRecognizers>
                                 <CheckBox/>
                                 <Label Text="Grillowe specjały" TextColor="Black" VerticalOptions="Center"/>
                             </HorizontalStackLayout>
-                            <HorizontalStackLayout Margin="2,1,0,1" Spacing="8">
+                            <HorizontalStackLayout Margin="3,0,0,0" Spacing="8">
+                                <HorizontalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnFilterTapped"/>
+                                </HorizontalStackLayout.GestureRecognizers>
                                 <CheckBox/>
                                 <Label Text="Na wynos i do lunchboxa" TextColor="Black" VerticalOptions="Center"/>
                             </HorizontalStackLayout>
                         </VerticalStackLayout>
                     </toolkit:Expander>
 
-                    <!-- STOPIEŃ TRUDNOŚCI -->
-                    <toolkit:Expander>
+                    <!-- === STOPIEŃ TRUDNOŚCI === -->
+                    <toolkit:Expander x:Name="TrudnoscExpander" ExpandedChanged="OnTrudnoscExpandedChanged">
                         <toolkit:Expander.Header>
                             <Frame Style="{StaticResource FilterSectionStyle}">
-                                <Label Text="STOPIEŃ TRUDNOŚCI" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center"/>
+                                <HorizontalStackLayout HorizontalOptions="Center">
+                                    <Label Text="STOPIEŃ TRUDNOŚCI"
+                               FontAttributes="Bold"
+                               TextColor="White"
+                               x:Name="TrudnoscLabel">
+                                        <Label.GestureRecognizers>
+                                            <PointerGestureRecognizer PointerEntered="OnTrudnoscPointerEntered"
+                                                          PointerExited="OnTrudnoscPointerExited" />
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                    <Label x:Name="TrudnoscArrow"
+                                           Text="▼"
+                                           FontSize="10"
+                                           TextColor="White"
+                                           Margin="10,0,0,0"
+                                           VerticalOptions="Center" />
+                                </HorizontalStackLayout>
                             </Frame>
                         </toolkit:Expander.Header>
                         <VerticalStackLayout Margin="20,0">
-                            <HorizontalStackLayout Margin="2,1,0,1" Spacing="8">
+                            <HorizontalStackLayout Margin="3,0,0,0" Spacing="8">
+                                <HorizontalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnFilterTapped"/>
+                                </HorizontalStackLayout.GestureRecognizers>
                                 <CheckBox/>
                                 <Label Text="Szybkie i łatwe" TextColor="Black" VerticalOptions="Center"/>
                             </HorizontalStackLayout>
-                            <HorizontalStackLayout Margin="2,1,0,1" Spacing="8">
+                            <HorizontalStackLayout Margin="3,0,0,0" Spacing="8">
+                                <HorizontalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnFilterTapped"/>
+                                </HorizontalStackLayout.GestureRecognizers>
                                 <CheckBox/>
                                 <Label Text="Średniozaawansowane" TextColor="Black" VerticalOptions="Center"/>
                             </HorizontalStackLayout>
-                            <HorizontalStackLayout Margin="2,1,0,1" Spacing="8">
+                            <HorizontalStackLayout Margin="3,0,0,0" Spacing="8">
+                                <HorizontalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnFilterTapped"/>
+                                </HorizontalStackLayout.GestureRecognizers>
                                 <CheckBox/>
                                 <Label Text="Zaawansowane" TextColor="Black" VerticalOptions="Center"/>
                             </HorizontalStackLayout>
                         </VerticalStackLayout>
                     </toolkit:Expander>
+
                 </VerticalStackLayout>
             </ScrollView>
+
+
 
             <!-- Wyniki wyszukiwania -->
             <Frame Grid.Column="1" BackgroundColor="White" CornerRadius="20" Padding="10" HasShadow="True">
