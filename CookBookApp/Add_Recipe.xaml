@@ -22,7 +22,6 @@
 
                 <!-- Rodzaj dania -->
                 <VerticalStackLayout Grid.Column="0">
-                    <Label Text="Rodzaj dania:" FontSize="14" TextColor="White"/>
                     <Picker x:Name="DishTypePickerRodzajDania" Title="Wybierz rodzaj dania" BackgroundColor="#3B3533" TextColor="White">
                         <Picker.ItemsSource>
                             <x:Array Type="{x:Type x:String}">
@@ -41,7 +40,6 @@
 
                 <!-- Kuchnia świata -->
                 <VerticalStackLayout Grid.Column="1">
-                    <Label Text="Kuchnia świata:" FontSize="14" TextColor="White"/>
                     <Picker x:Name="CuisinePickerKuchniaSwiata" Title="Wybierz kuchnię" BackgroundColor="#3B3533" TextColor="White">
                         <Picker.ItemsSource>
                             <x:Array Type="{x:Type x:String}">
@@ -58,7 +56,6 @@
 
                 <!-- Główny składnik -->
                 <VerticalStackLayout Grid.Column="2">
-                    <Label Text="Główny składnik:" FontSize="14" TextColor="White"/>
                     <Picker x:Name="MainIngredientPickerGlownySkladnik" Title="Wybierz składnik" BackgroundColor="#3B3533" TextColor="White">
                         <Picker.ItemsSource>
                             <x:Array Type="{x:Type x:String}">
@@ -74,7 +71,6 @@
 
                 <!-- Okazja -->
                 <VerticalStackLayout Grid.Column="3">
-                    <Label Text="Okazja:" FontSize="14" TextColor="White"/>
                     <Picker x:Name="OccasionPickerOkazja" Title="Wybierz okazję" BackgroundColor="#3B3533" TextColor="White">
                         <Picker.ItemsSource>
                             <x:Array Type="{x:Type x:String}">
@@ -90,7 +86,6 @@
 
                 <!-- Poziom trudności -->
                 <VerticalStackLayout Grid.Column="4">
-                    <Label Text="Poziom trudności:" FontSize="14" TextColor="White"/>
                     <Picker x:Name="OccasionPickerPoziomTrudnosci" Title="Wybierz" BackgroundColor="#3B3533" TextColor="White">
                         <Picker.ItemsSource>
                             <x:Array Type="{x:Type x:String}">
