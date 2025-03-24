@@ -24,14 +24,101 @@ namespace CookBookApp
             //_newRecipe.InstructionSteps = new List<InstructionStep>();
         }
 
+        // Dodawanie nowego sk³adnika
         private void OnAddIngredientClicked(object sender, EventArgs e)
         {
-            AddIngredientEntry("Dodaj sk³adnik ...", "0,00");
+            var row = new HorizontalStackLayout { Spacing = 15 };
+
+            var removeButton = new Button
+            {
+                Text = "-",
+                Style = (Style)Resources["MinusButtonStyle"]
+            };
+            removeButton.Clicked += OnRemoveIngredientClicked;
+
+            var ingredientEntry = new Entry
+            {
+                Placeholder = "Dodaj sk³adnik ...",
+                MaxLength = 400,
+                BackgroundColor = Color.FromArgb("#3B3533"),
+                PlaceholderColor = Colors.White,
+                WidthRequest = 425
+            };
+
+            var amountEntry = new Entry
+            {
+                Placeholder = "0.00",
+                Keyboard = Keyboard.Numeric,
+                BackgroundColor = Color.FromArgb("#3B3533"),
+                PlaceholderColor = Colors.White,
+                WidthRequest = 80
+            };
+
+            var unitPicker = new Picker
+            {
+                WidthRequest = 110,
+                BackgroundColor = Color.FromArgb("#3B3533"),
+                TextColor = Colors.White
+            };
+            unitPicker.ItemsSource = new List<string> { "g", "ml", "szt", "³y¿ka", "szklanka" };
+            unitPicker.SelectedIndex = 0;
+
+            row.Children.Add(removeButton);
+            row.Children.Add(new Frame { BorderColor = Colors.White, CornerRadius = 5, Padding = 5, BackgroundColor = Colors.Transparent, Content = ingredientEntry });
+            row.Children.Add(new Frame { BorderColor = Colors.White, CornerRadius = 5, Padding = 5, BackgroundColor = Colors.Transparent, Content = amountEntry });
+            row.Children.Add(new Frame { BorderColor = Colors.White, CornerRadius = 5, Padding = 5, BackgroundColor = Colors.Transparent, Content = unitPicker });
+
+            IngredientsList.Children.Add(row);
         }
 
+        // Usuwanie sk³adnika
+        private void OnRemoveIngredientClicked(object sender, EventArgs e)
+        {
+            var button = sender as Button;
+            var row = button?.Parent as HorizontalStackLayout;
+            if (row != null)
+            {
+                IngredientsList.Children.Remove(row);
+            }
+        }
+
+        // Dodawanie nowego kroku
         private void OnAddStepsClicked(object sender, EventArgs e)
         {
-            AddStepEntry("Dodaj krok ...", "0");
+            var row = new HorizontalStackLayout { Spacing = 15 };
+
+            var removeButton = new Button
+            {
+                Text = "-",
+                Style = (Style)Resources["MinusButtonStyle"]
+            };
+            removeButton.Clicked += OnRemoveStepClicked;
+
+            var stepEntry = new Entry
+            {
+                Placeholder = "Dodaj krok ...",
+                FontAttributes = FontAttributes.Italic,
+                MaxLength = 500,
+                BackgroundColor = Color.FromArgb("#3B3533"),
+                PlaceholderColor = Colors.White,
+                WidthRequest = 670
+            };
+
+            row.Children.Add(removeButton);
+            row.Children.Add(new Frame { BorderColor = Colors.White, CornerRadius = 5, Padding = 5, BackgroundColor = Colors.Transparent, Content = stepEntry });
+
+            StepsList.Children.Add(row);
+        }
+
+        // Usuwanie kroku
+        private void OnRemoveStepClicked(object sender, EventArgs e)
+        {
+            var button = sender as Button;
+            var row = button?.Parent as HorizontalStackLayout;
+            if (row != null)
+            {
+                StepsList.Children.Remove(row);
+            }
         }
         private async void OnAddImageClicked(object sender, EventArgs e)
         {
@@ -56,10 +143,9 @@ namespace CookBookApp
         }
 
         // Funkcja do dodawania nowego sk³adnika z gramatur¹
-        private void AddIngredientEntry(string placeholderNazwa, string placeholderAmount)
+        private void AddIngredientEntry(string placeholderIngredient, string placeholderAmount)
         {
-            // Tworzymy layout dla nowego sk³adnika
-            var layout = new HorizontalStackLayout { Spacing = 5 };
+            var layout = new HorizontalStackLayout { Spacing = 15 };
 
             // Przycisk usuwania
             var removeButton = new Button
@@ -72,23 +158,20 @@ namespace CookBookApp
                 HeightRequest = 40
             };
 
-            removeButton.Clicked += (s, e) => IngredientsList.Children.Remove(layout);
-
-            // Entry: Nazwa sk³adnika
+            // Entry: Sk³adnik
             var ingredientEntryFrame = new Frame
             {
                 BorderColor = Colors.White,
-                CornerRadius = 10,
+                CornerRadius = 5,
                 Padding = 5,
                 BackgroundColor = Colors.Transparent,
                 Content = new Entry
                 {
-                    Text = "",
-                    Placeholder = placeholderNazwa,
-                    MaxLength = 200,
+                    Placeholder = placeholderIngredient,
+                    MaxLength = 400,
                     BackgroundColor = Color.FromHex("#3B3533"),
                     PlaceholderColor = Colors.White,
-                    WidthRequest = 475
+                    WidthRequest = 425
                 }
             };
 
@@ -96,17 +179,16 @@ namespace CookBookApp
             var amountEntryFrame = new Frame
             {
                 BorderColor = Colors.White,
-                CornerRadius = 10,
+                CornerRadius = 5,
                 Padding = 5,
                 BackgroundColor = Colors.Transparent,
                 Content = new Entry
                 {
-                    Text = "",
                     Placeholder = placeholderAmount,
                     Keyboard = Keyboard.Numeric,
                     BackgroundColor = Color.FromHex("#3B3533"),
                     PlaceholderColor = Colors.White,
-                    WidthRequest = 80,
+                    WidthRequest = 80
                 }
             };
 
@@ -117,18 +199,19 @@ namespace CookBookApp
                 BackgroundColor = Color.FromHex("#3B3533"),
                 TextColor = Colors.White,
                 ItemsSource = new List<string> { "g", "ml", "szt", "³y¿ka", "szklanka" },
-                SelectedIndex = -1
+                //SelectedIndex = -1 // domyœlnie wybrana jednostka
             };
 
             var unitPickerFrame = new Frame
             {
                 BorderColor = Colors.White,
-                CornerRadius = 10,
+                CornerRadius = 5,
                 Padding = 5,
                 BackgroundColor = Colors.Transparent,
                 Content = unitPicker
             };
 
+            // Dodawanie do layoutu
             layout.Children.Add(removeButton);
             layout.Children.Add(ingredientEntryFrame);
             layout.Children.Add(amountEntryFrame);
@@ -137,12 +220,10 @@ namespace CookBookApp
             IngredientsList.Children.Add(layout);
         }
 
-        
-
-        // Funkcja do dodawania nowego kroku z czasem wykonania
-        private void AddStepEntry(string placeholder, string unit)
+        // Funkcja do dodawania kroku
+        private void AddStepEntry(string placeholder)
         {
-            var layout = new HorizontalStackLayout { Spacing = 5 };
+            var layout = new HorizontalStackLayout { Spacing = 15 };
 
             // Przycisk usuwania
             var removeButton = new Button
@@ -153,31 +234,26 @@ namespace CookBookApp
                 BackgroundColor = Colors.Red,
                 WidthRequest = 40,
                 HeightRequest = 40
-            }; 
+            };
 
-            // Opis kroku (Entry w ramce)
+            // Entry: Krok
             var stepEntryFrame = new Frame
             {
                 BorderColor = Colors.White,
-                CornerRadius = 10,
+                CornerRadius = 5,
                 Padding = 5,
                 BackgroundColor = Colors.Transparent,
                 Content = new Entry
                 {
-                    Text = "",
                     Placeholder = placeholder,
                     FontAttributes = FontAttributes.Italic,
-                    MaxLength = 200,
+                    MaxLength = 500,
                     BackgroundColor = Color.FromHex("#3B3533"),
                     PlaceholderColor = Colors.White,
-                    WidthRequest = 700
+                    WidthRequest = 670
                 }
             };
 
-            // Obs³uga usuwania kroku
-            removeButton.Clicked += (s, e) => StepsList.Children.Remove(layout);
-
-            // Dodanie do layoutu
             layout.Children.Add(removeButton);
             layout.Children.Add(stepEntryFrame);
 
@@ -272,7 +348,7 @@ namespace CookBookApp
             selectedUnit = unitPicker?.SelectedItem?.ToString();
         }
 
-        private bool ValidAddStep()
+        private bool ValidAddAllStep()
         {
             bool isValid = true;
 
@@ -295,6 +371,29 @@ namespace CookBookApp
                             }
                         }
                     }
+                }
+            }
+
+            return isValid;
+        }
+
+        private bool ValidateAllCategories()
+        {
+            bool isValid = true;
+
+            // Przyk³ad dla Twoich pickerów, musisz podaæ ich nazwy tak jak w XAML
+            var categoryPickers = new List<Picker> { DishTypePickerRodzajDania, CuisinePickerKuchniaSwiata, MainIngredientPickerGlownySkladnik, OccasionPickerOkazja, OccasionPickerPoziomTrudnosci };
+
+            foreach (var picker in categoryPickers)
+            {
+                if (picker.SelectedIndex == -1 || picker.SelectedItem == null)
+                {
+                    picker.TitleColor = Colors.Red;
+                    isValid = false;
+                }
+                else
+                {
+                    picker.TitleColor = Color.FromArgb("#3B3533"); // lub inny domyœlny kolor
                 }
             }
 
@@ -382,10 +481,11 @@ namespace CookBookApp
 
         private bool ValidateAll()
         {
-            bool isStepsValid = ValidAddStep();
+            bool isStepsValid = ValidAddAllStep();
             bool isIngredientsValid = ValidationAddAllIngredient();
+            bool isCategoriesValid = ValidateAllCategories();
 
-            return isStepsValid && isIngredientsValid;
+            return isStepsValid && isIngredientsValid && isCategoriesValid && isCategoriesValid;
         }
     }
 }
