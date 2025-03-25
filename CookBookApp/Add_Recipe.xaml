@@ -42,7 +42,7 @@
             <Label Text="Nazwa przepisu:" FontSize="18" FontAttributes="Bold"/>
             <Entry x:Name="RecipeNameEntry" Placeholder="Wpisz nazwę przepisu" MaxLength="200" BackgroundColor="#3B3533" PlaceholderColor="White"/>
 
-            <!-- Pickery -->
+            <!-- Pickery w ramkach -->
             <Grid ColumnSpacing="30" Padding="0,5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -54,87 +54,121 @@
 
                 <!-- Rodzaj dania -->
                 <VerticalStackLayout Grid.Column="0">
-                    <Picker x:Name="DishTypePickerRodzajDania" Title="Rodzaj dania" BackgroundColor="#3B3533" TextColor="White">
-                        <Picker.ItemsSource>
-                            <x:Array Type="{x:Type x:String}">
-                                <x:String>Śniadania</x:String>
-                                <x:String>Przystawki i przekąski</x:String>
-                                <x:String>Zupy</x:String>
-                                <x:String>Dania główne</x:String>
-                                <x:String>Desery</x:String>
-                                <x:String>Pieczywo i wypieki</x:String>
-                                <x:String>Napoje</x:String>
-                                <x:String>Sosy i dodatki</x:String>
-                            </x:Array>
-                        </Picker.ItemsSource>
-                    </Picker>
+                    <Frame BackgroundColor="#3B3533" CornerRadius="12" Padding="6" HasShadow="False">
+                        <Picker x:Name="DishTypePickerRodzajDania" Title="Rodzaj dania" BackgroundColor="Transparent" TextColor="White">
+                            <Picker.ItemsSource>
+                                <x:Array Type="{x:Type x:String}">
+                                    <x:String>Śniadania</x:String>
+                                    <x:String>Przystawki i przekąski</x:String>
+                                    <x:String>Zupy</x:String>
+                                    <x:String>Dania główne</x:String>
+                                    <x:String>Desery</x:String>
+                                    <x:String>Pieczywo i wypieki</x:String>
+                                    <x:String>Napoje</x:String>
+                                    <x:String>Sosy i dodatki</x:String>
+                                </x:Array>
+                            </Picker.ItemsSource>
+                        </Picker>
+                    </Frame>
                 </VerticalStackLayout>
 
-                <!-- Kuchnia swiata -->
+                <!-- Kuchnia świata -->
                 <VerticalStackLayout Grid.Column="1">
-                    <Picker x:Name="CuisinePickerKuchniaSwiata" Title="Wybierz kuchnię" BackgroundColor="#3B3533" TextColor="White">
-                        <Picker.ItemsSource>
-                            <x:Array Type="{x:Type x:String}">
-                                <x:String>Polska</x:String>
-                                <x:String>Włoska</x:String>
-                                <x:String>Francuska</x:String>
-                                <x:String>Azjatycka</x:String>
-                                <x:String>Meksykańska</x:String>
-                                <x:String>Śródziemnomorska</x:String>
-                            </x:Array>
-                        </Picker.ItemsSource>
-                    </Picker>
+                    <Frame BackgroundColor="#3B3533" CornerRadius="12" Padding="6" HasShadow="False">
+                        <Picker x:Name="CuisinePickerKuchniaSwiata" Title="Wybierz kuchnię" BackgroundColor="Transparent" TextColor="White">
+                            <Picker.ItemsSource>
+                                <x:Array Type="{x:Type x:String}">
+                                    <x:String>Polska</x:String>
+                                    <x:String>Włoska</x:String>
+                                    <x:String>Francuska</x:String>
+                                    <x:String>Azjatycka</x:String>
+                                    <x:String>Meksykańska</x:String>
+                                    <x:String>Śródziemnomorska</x:String>
+                                </x:Array>
+                            </Picker.ItemsSource>
+                        </Picker>
+                    </Frame>
                 </VerticalStackLayout>
 
-                <!-- Glowny skladnik -->
+                <!-- Główny składnik -->
                 <VerticalStackLayout Grid.Column="2">
-                    <Picker x:Name="MainIngredientPickerGlownySkladnik" Title="Wybierz składnik" BackgroundColor="#3B3533" TextColor="White">
-                        <Picker.ItemsSource>
-                            <x:Array Type="{x:Type x:String}">
-                                <x:String>Mięsne</x:String>
-                                <x:String>Rybne i owoce morza</x:String>
-                                <x:String>Wegetariańskie</x:String>
-                                <x:String>Wegańskie</x:String>
-                                <x:String>Bezglutenowe</x:String>
-                            </x:Array>
-                        </Picker.ItemsSource>
-                    </Picker>
+                    <Frame BackgroundColor="#3B3533" CornerRadius="12" Padding="6" HasShadow="False">
+                        <Picker x:Name="MainIngredientPickerGlownySkladnik" Title="Wybierz składnik" BackgroundColor="Transparent" TextColor="White">
+                            <Picker.ItemsSource>
+                                <x:Array Type="{x:Type x:String}">
+                                    <x:String>Mięsne</x:String>
+                                    <x:String>Rybne i owoce morza</x:String>
+                                    <x:String>Wegetariańskie</x:String>
+                                    <x:String>Wegańskie</x:String>
+                                    <x:String>Bezglutenowe</x:String>
+                                </x:Array>
+                            </Picker.ItemsSource>
+                        </Picker>
+                    </Frame>
                 </VerticalStackLayout>
 
                 <!-- Okazja -->
                 <VerticalStackLayout Grid.Column="3">
-                    <Picker x:Name="OccasionPickerOkazja" Title="Wybierz okazję" BackgroundColor="#3B3533" TextColor="White">
-                        <Picker.ItemsSource>
-                            <x:Array Type="{x:Type x:String}">
-                                <x:String>Codzienne obiady</x:String>
-                                <x:String>Świąteczne dania</x:String>
-                                <x:String>Imprezowe przekąski</x:String>
-                                <x:String>Grillowe specjały</x:String>
-                                <x:String>Dania na wynos i do lunchboxa</x:String>
-                            </x:Array>
-                        </Picker.ItemsSource>
-                    </Picker>
+                    <Frame BackgroundColor="#3B3533" CornerRadius="12" Padding="6" HasShadow="False">
+                        <Picker x:Name="OccasionPickerOkazja" Title="Wybierz okazję" BackgroundColor="Transparent" TextColor="White">
+                            <Picker.ItemsSource>
+                                <x:Array Type="{x:Type x:String}">
+                                    <x:String>Codzienne obiady</x:String>
+                                    <x:String>Świąteczne dania</x:String>
+                                    <x:String>Imprezowe przekąski</x:String>
+                                    <x:String>Grillowe specjały</x:String>
+                                    <x:String>Dania na wynos i do lunchboxa</x:String>
+                                </x:Array>
+                            </Picker.ItemsSource>
+                        </Picker>
+                    </Frame>
                 </VerticalStackLayout>
 
-                <!-- Poziom trudnosci -->
+                <!-- Poziom trudności -->
                 <VerticalStackLayout Grid.Column="4">
-                    <Picker x:Name="OccasionPickerPoziomTrudnosci" Title="Poziom trudności:" BackgroundColor="#3B3533" TextColor="White">
-                        <Picker.ItemsSource>
-                            <x:Array Type="{x:Type x:String}">
-                                <x:String>Easy</x:String>
-                                <x:String>Medium</x:String>
-                                <x:String>Hard</x:String>
-                            </x:Array>
-                        </Picker.ItemsSource>
-                    </Picker>
+                    <Frame BackgroundColor="#3B3533" CornerRadius="12" Padding="6" HasShadow="False">
+                        <Picker x:Name="OccasionPickerPoziomTrudnosci" Title="Poziom trudności" BackgroundColor="Transparent" TextColor="White">
+                            <Picker.ItemsSource>
+                                <x:Array Type="{x:Type x:String}">
+                                    <x:String>Easy</x:String>
+                                    <x:String>Medium</x:String>
+                                    <x:String>Hard</x:String>
+                                </x:Array>
+                            </Picker.ItemsSource>
+                        </Picker>
+                    </Frame>
                 </VerticalStackLayout>
-
             </Grid>
 
-            <!-- Składniki -->
-            <Label Text="Składniki" FontSize="28" FontAttributes="Bold" HorizontalOptions="Center"/>
-            <ScrollView>
-                <VerticalStackLayout x:Name="IngredientsList" Spacing="5">
+
+            <!-- Nagłówek Składniki z ikonką -->
+            <Frame x:Name="IngredientsHeaderFrame"
+                   BorderColor="White"
+                   CornerRadius="10"
+                   Padding="10"
+                   BackgroundColor="Transparent"
+                   HasShadow="False"
+                   Margin="0,10,0,10">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnIngredientsLabelTapped" />
+                </Frame.GestureRecognizers>
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
+                    <Label x:Name="IngredientsLabel"
+                           Text="Składniki"
+                           FontSize="28"
+                           FontAttributes="Bold"
+                           TextColor="White" />
+                    <Image x:Name="ToggleIcon"
+                            Source="double_arrow_down.png"
+                            HeightRequest="24"
+                            WidthRequest="24"
+                            Rotation="0" />
+                </HorizontalStackLayout>
+            </Frame>
+
+            <!-- Lista składników -->
+            <ScrollView x:Name="IngredientsScrollView" IsVisible="True">
+                <VerticalStackLayout x:Name="IngredientsList" Spacing="10">
 
                     <HorizontalStackLayout Spacing="15">
                         <Button Text="-" Style="{StaticResource MinusButtonStyle}" Clicked="OnRemoveIngredientClicked"/>
@@ -165,23 +199,73 @@
                 </VerticalStackLayout>
             </ScrollView>
 
-            <Button x:Name="AddIngredientsButton" Text="+" Clicked="OnAddIngredientClicked" FontSize="24" TextColor="White" BackgroundColor="#3B3533" BorderColor="White" BorderWidth="1" HeightRequest="44"/>
-
-            <!-- Sposob przygotowania -->
-            <Label Text="Sposób przygotowania:" FontSize="28" FontAttributes="Bold" HorizontalOptions="Center"/>
-
-            <VerticalStackLayout x:Name="StepsList" Spacing="5">
-
-                <HorizontalStackLayout Spacing="15">
-                    <Button Text="-" Style="{StaticResource MinusButtonStyle}" Clicked="OnRemoveStepClicked"/>
-
-                    <Frame BorderColor="White" CornerRadius="5" Padding="5" BackgroundColor="Transparent">
-                        <Entry Placeholder="Dodaj krok ..." FontAttributes="Italic" MaxLength="500" BackgroundColor="#3B3533" PlaceholderColor="White" WidthRequest="670"/>
-                    </Frame>
+            <!-- Przycisk dodawania -->
+            <Button x:Name="AddIngredientsButton"
+                    Text="+"
+                    Clicked="OnAddIngredientClicked"
+                    FontSize="24"
+                    TextColor="White"
+                    BackgroundColor="#3B3533"
+                    BorderColor="White"
+                    BorderWidth="1"
+                    HeightRequest="44"
+                    IsVisible="True"/>
+            
+            <!-- Sposób przygotowania -->
+            <Frame x:Name="StepsHeaderFrame"
+                   BorderColor="White"
+                   CornerRadius="10"
+                   Padding="10"
+                   BackgroundColor="Transparent"
+                   HasShadow="False"
+                   Margin="0,10,0,10"
+                   IsVisible="True">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnStepsLabelTapped" />
+                </Frame.GestureRecognizers>
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
+                    <Label x:Name="StepsLabel"
+                           Text="Sposób przygotowania"
+                           FontSize="28"
+                           FontAttributes="Bold"
+                           TextColor="White" />
+                    <Image x:Name="StepsToggleIcon"
+                           Source="double_arrow_down.png"
+                           HeightRequest="24"
+                           WidthRequest="24"
+                           Rotation="0" />
                 </HorizontalStackLayout>
-            </VerticalStackLayout>
+            </Frame>
 
-            <Button x:Name="AddStepButton" Text="+" Clicked="OnAddStepsClicked" FontSize="24" TextColor="White" BackgroundColor="#3B3533" BorderColor="White" BorderWidth="1" HeightRequest="44"/>
+            <ScrollView x:Name="StepsScrollView" IsVisible="True">
+                <VerticalStackLayout x:Name="StepsList" Spacing="10">
+
+                    <HorizontalStackLayout Spacing="15">
+                        <Button Text="-" Style="{StaticResource MinusButtonStyle}" Clicked="OnRemoveStepClicked"/>
+
+                        <Frame BorderColor="White" CornerRadius="5" Padding="5" BackgroundColor="Transparent">
+                            <Entry Placeholder="Dodaj krok ..."
+                                    FontAttributes="Italic"
+                                    MaxLength="500"
+                                    BackgroundColor="#3B3533"
+                                    PlaceholderColor="White"
+                                    WidthRequest="670"/>    
+                        </Frame>
+                    </HorizontalStackLayout>
+
+                </VerticalStackLayout>
+            </ScrollView>
+
+            <Button x:Name="AddStepButton"
+                    Text="+"    
+                    Clicked="OnAddStepsClicked"
+                    FontSize="24"
+                    TextColor="White"
+                    BackgroundColor="#3B3533"
+                    BorderColor="White"
+                    BorderWidth="1"
+                    HeightRequest="44"
+                    IsVisible="True"/>
 
             <!-- Zdjecie -->
             <VerticalStackLayout Padding="5" Spacing="20">

@@ -14,14 +14,13 @@ namespace CookBookApp
 
         private string _imageFilePath = null;
 
+        private bool _ingredientsVisible = true;
+        private bool stepsVisible = true;
+
         public Add_Recipe(IBaseRepository baseRepository)// Konstruktor, który dostaje DbContext z DI
         {
             InitializeComponent();
             _baseRepository = baseRepository;
-
-            //_newRecipe = new Recipe();
-            //_newRecipe.Ingredients = new List<Ingredient>();
-            //_newRecipe.InstructionSteps = new List<InstructionStep>();
         }
 
         // Dodawanie nowego sk³adnika
@@ -70,6 +69,100 @@ namespace CookBookApp
 
             IngredientsList.Children.Add(row);
         }
+
+        private async void OnIngredientsLabelTapped(object sender, EventArgs e)
+        {
+            _ingredientsVisible = !_ingredientsVisible;
+
+            if (_ingredientsVisible)
+            {
+                await ToggleIcon.RotateTo(0, 500, Easing.CubicInOut);
+
+                // Przywracamy ramkê do normalnego wygl¹du
+                IngredientsHeaderFrame.BorderColor = Colors.Transparent;
+
+                // Pocz¹tkowy stan do animacji
+                IngredientsScrollView.TranslationY = -20;
+                AddIngredientsButton.TranslationY = -20;
+
+                IngredientsScrollView.Opacity = 0;
+                AddIngredientsButton.Opacity = 0;
+
+                // Ustawiamy widocznoœæ
+                IngredientsScrollView.IsVisible = true;
+                AddIngredientsButton.IsVisible = true;
+
+                // Animujemy wejœcie
+                await Task.WhenAll(
+                    IngredientsScrollView.TranslateTo(0, 0, 500, Easing.SinOut),
+                    IngredientsScrollView.FadeTo(1, 500),
+                    AddIngredientsButton.TranslateTo(0, 0, 500, Easing.SinOut),
+                    AddIngredientsButton.FadeTo(1, 500)
+                );  
+            }
+            else
+            {
+                await ToggleIcon.RotateTo(180, 500, Easing.CubicInOut);
+                IngredientsHeaderFrame.BorderColor = Colors.White;
+
+                // Animujemy znikniêcie
+                await Task.WhenAll(
+                    IngredientsScrollView.TranslateTo(0, 0, 500, Easing.SinOut),
+                    IngredientsScrollView.FadeTo(1, 500),
+                    AddIngredientsButton.TranslateTo(0, 0, 500, Easing.SinOut),
+                    AddIngredientsButton.FadeTo(1, 500)
+                );
+
+                // Ukrywamy
+                IngredientsScrollView.IsVisible = false;
+                AddIngredientsButton.IsVisible = false;
+            }
+        }
+        private async void OnStepsLabelTapped(object sender, EventArgs e)
+        {
+            stepsVisible = !stepsVisible;
+
+            if (stepsVisible)
+            {
+                await StepsToggleIcon.RotateTo(0, 500, Easing.CubicInOut);
+                StepsHeaderFrame.BorderColor = Colors.Transparent;
+
+                StepsScrollView.TranslationY = -20;
+                AddStepButton.TranslationY = -20;
+
+                StepsScrollView.Opacity = 0;
+                AddStepButton.Opacity = 0;
+
+                StepsScrollView.IsVisible = true;
+                AddStepButton.IsVisible = true;
+
+                await Task.WhenAll(
+                    StepsScrollView.TranslateTo(0, 0, 500, Easing.SinOut),
+                    StepsScrollView.FadeTo(1, 500),
+                    AddStepButton.TranslateTo(0, 0, 500, Easing.SinOut),
+                    AddStepButton.FadeTo(1, 500)
+                );
+            }
+            else
+            {
+                
+                await StepsToggleIcon.RotateTo(180, 500, Easing.CubicInOut);
+                StepsHeaderFrame.BorderColor = Colors.White;
+
+                // Animujemy znikniêcie
+                await Task.WhenAll(
+                    StepsScrollView.FadeTo(0, 500),
+                    StepsScrollView.TranslateTo(0, -20, 500, Easing.SinIn),
+                    AddStepButton.FadeTo(0, 500),
+                    AddStepButton.TranslateTo(0, -20, 500, Easing.SinIn)
+                );
+                // Ukrywamy
+                StepsScrollView.IsVisible = false;
+                AddStepButton.IsVisible = false;
+                
+            }
+        }
+
 
         // Usuwanie sk³adnika
         private void OnRemoveIngredientClicked(object sender, EventArgs e)
@@ -142,123 +235,6 @@ namespace CookBookApp
             }
         }
 
-        // Funkcja do dodawania nowego sk³adnika z gramatur¹
-        private void AddIngredientEntry(string placeholderIngredient, string placeholderAmount)
-        {
-            var layout = new HorizontalStackLayout { Spacing = 15 };
-
-            // Przycisk usuwania
-            var removeButton = new Button
-            {
-                Text = "-",
-                FontSize = 30,
-                TextColor = Colors.White,
-                BackgroundColor = Colors.Red,
-                WidthRequest = 40,
-                HeightRequest = 40
-            };
-
-            // Entry: Sk³adnik
-            var ingredientEntryFrame = new Frame
-            {
-                BorderColor = Colors.White,
-                CornerRadius = 5,
-                Padding = 5,
-                BackgroundColor = Colors.Transparent,
-                Content = new Entry
-                {
-                    Placeholder = placeholderIngredient,
-                    MaxLength = 400,
-                    BackgroundColor = Color.FromHex("#3B3533"),
-                    PlaceholderColor = Colors.White,
-                    WidthRequest = 425
-                }
-            };
-
-            // Entry: Iloœæ
-            var amountEntryFrame = new Frame
-            {
-                BorderColor = Colors.White,
-                CornerRadius = 5,
-                Padding = 5,
-                BackgroundColor = Colors.Transparent,
-                Content = new Entry
-                {
-                    Placeholder = placeholderAmount,
-                    Keyboard = Keyboard.Numeric,
-                    BackgroundColor = Color.FromHex("#3B3533"),
-                    PlaceholderColor = Colors.White,
-                    WidthRequest = 80
-                }
-            };
-
-            // Picker: Jednostka
-            var unitPicker = new Picker
-            {
-                WidthRequest = 110,
-                BackgroundColor = Color.FromHex("#3B3533"),
-                TextColor = Colors.White,
-                ItemsSource = new List<string> { "g", "ml", "szt", "³y¿ka", "szklanka" },
-                //SelectedIndex = -1 // domyœlnie wybrana jednostka
-            };
-
-            var unitPickerFrame = new Frame
-            {
-                BorderColor = Colors.White,
-                CornerRadius = 5,
-                Padding = 5,
-                BackgroundColor = Colors.Transparent,
-                Content = unitPicker
-            };
-
-            // Dodawanie do layoutu
-            layout.Children.Add(removeButton);
-            layout.Children.Add(ingredientEntryFrame);
-            layout.Children.Add(amountEntryFrame);
-            layout.Children.Add(unitPickerFrame);
-
-            IngredientsList.Children.Add(layout);
-        }
-
-        // Funkcja do dodawania kroku
-        private void AddStepEntry(string placeholder)
-        {
-            var layout = new HorizontalStackLayout { Spacing = 15 };
-
-            // Przycisk usuwania
-            var removeButton = new Button
-            {
-                Text = "-",
-                FontSize = 30,
-                TextColor = Colors.White,
-                BackgroundColor = Colors.Red,
-                WidthRequest = 40,
-                HeightRequest = 40
-            };
-
-            // Entry: Krok
-            var stepEntryFrame = new Frame
-            {
-                BorderColor = Colors.White,
-                CornerRadius = 5,
-                Padding = 5,
-                BackgroundColor = Colors.Transparent,
-                Content = new Entry
-                {
-                    Placeholder = placeholder,
-                    FontAttributes = FontAttributes.Italic,
-                    MaxLength = 500,
-                    BackgroundColor = Color.FromHex("#3B3533"),
-                    PlaceholderColor = Colors.White,
-                    WidthRequest = 670
-                }
-            };
-
-            layout.Children.Add(removeButton);
-            layout.Children.Add(stepEntryFrame);
-
-            StepsList.Children.Add(layout);
-        }
         private bool ValidationAddAllIngredient()
         {
             bool isValid = true;
