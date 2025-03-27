@@ -27,7 +27,6 @@ namespace CookBookApp.Models
 
         public DifficultyLevel? Difficulty { get; set; } // Opcjonalnie
 
-        // Relacja do Ingredients
         public List<Ingredient> Ingredients { get; set; } = new();
 
         // Relacja do InstructionSteps

@@ -107,10 +107,10 @@ namespace CookBookApp
 
                 // Animujemy znikniêcie
                 await Task.WhenAll(
-                    IngredientsScrollView.TranslateTo(0, 0, 500, Easing.SinOut),
-                    IngredientsScrollView.FadeTo(1, 500),
-                    AddIngredientsButton.TranslateTo(0, 0, 500, Easing.SinOut),
-                    AddIngredientsButton.FadeTo(1, 500)
+                    IngredientsScrollView.TranslateTo(0, -20, 500, Easing.SinIn),
+                    IngredientsScrollView.FadeTo(0, 500),
+                    AddIngredientsButton.TranslateTo(0, -20, 500, Easing.SinIn),
+                    AddIngredientsButton.FadeTo(0, 500)
                 );
 
                 // Ukrywamy
