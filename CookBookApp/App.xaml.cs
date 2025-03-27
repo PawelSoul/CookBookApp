@@ -6,9 +6,9 @@ namespace CookBookApp
     public partial class App : Application
     {
 
-        private readonly IBaseRepository _iBaseRepository;
+        private readonly IRecipeRepository _iBaseRepository;
 
-        public App(IBaseRepository recipeRepository)
+        public App(IRecipeRepository recipeRepository)
         {
             InitializeComponent();
             _iBaseRepository = recipeRepository;

@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CookBookApp.Repositories
 {
-    internal class RecipeRepository : IBaseRepository
+    internal class RecipeRepository : IRecipeRepository
     {
         private readonly ILogger<RecipeRepository> _logger;
         private readonly AppDbContext _dbContext;
@@ -35,7 +35,7 @@ namespace CookBookApp.Repositories
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error adding recipe");
+                _logger.LogError(ex, $"Error adding recipe: {recipe.RecipeName}");
                 return false;
             }
         }

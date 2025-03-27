@@ -4,7 +4,9 @@ using CookBookApp.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using CommunityToolkit.Maui; // Dodaj to!
+using CommunityToolkit.Maui; 
+using System.IO;
+using Microsoft.Maui.Storage;
 
 namespace CookBookApp
 {
@@ -23,20 +25,15 @@ namespace CookBookApp
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-            // Wczytanie konfiguracji z appsettings.json
-            var config = builder.Configuration;
-            config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-
-            // Pobranie connection string
-            var connectionString = config.GetConnectionString("DefaultConnection");
-
             // Rejestracja DbContext
             builder.Services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(connectionString,
-                    b => b.MigrationsAssembly("CookBookApp.Migrations")));
+            {
+                string dbPath = Path.Combine("D:\\Projects\\CookBookApp", "CookBook.db");
+                options.UseSqlite($"Data Source={dbPath}");
+            });
 
             // Rejestracja repozytorium
-            builder.Services.AddScoped<IBaseRepository, RecipeRepository>();
+            builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
 
 #if DEBUG
             builder.Logging.AddDebug();

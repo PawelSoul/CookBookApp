@@ -5,9 +5,11 @@ VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CookBookApp", "CookBookApp\CookBookApp.csproj", "{4DA67F9A-5EB4-4C84-AD4C-A0EF1D2063F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookBookApp.Migrations", "CookBookApp.Migrations\CookBookApp.Migrations.csproj", "{4F69058B-550C-4724-8CC5-534843B50CEA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CookBookApp.Migrations", "CookBookApp.Migrations\CookBookApp.Migrations.csproj", "{4F69058B-550C-4724-8CC5-534843B50CEA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookBookApp.Data", "CookBookApp.Data\CookBookApp.Data.csproj", "{D5483D1E-113A-4099-9F7E-523EAB9C0E9E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CookBookApp.Data", "CookBookApp.Data\CookBookApp.Data.csproj", "{D5483D1E-113A-4099-9F7E-523EAB9C0E9E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookBookApp.EfRunner", "CookBookApp.EfRunner\CookBookApp.EfRunner.csproj", "{43B56AB4-C785-4199-B240-3D8EEB1D2688}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +31,10 @@ Global
 		{D5483D1E-113A-4099-9F7E-523EAB9C0E9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5483D1E-113A-4099-9F7E-523EAB9C0E9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5483D1E-113A-4099-9F7E-523EAB9C0E9E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43B56AB4-C785-4199-B240-3D8EEB1D2688}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43B56AB4-C785-4199-B240-3D8EEB1D2688}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43B56AB4-C785-4199-B240-3D8EEB1D2688}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43B56AB4-C785-4199-B240-3D8EEB1D2688}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

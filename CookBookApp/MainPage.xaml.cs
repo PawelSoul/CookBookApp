@@ -14,9 +14,9 @@ namespace CookBookApp
 {
     public partial class MainPage : ContentPage
     {
-        private readonly IBaseRepository _IBaseRepository;
+        private readonly IRecipeRepository _IBaseRepository;
 
-        public MainPage(IBaseRepository recipeRepository)
+        public MainPage(IRecipeRepository recipeRepository)
         {
             InitializeComponent();
             _IBaseRepository = recipeRepository;

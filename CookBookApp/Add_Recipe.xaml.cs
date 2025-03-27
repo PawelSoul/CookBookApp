@@ -8,7 +8,7 @@ namespace CookBookApp
 {
     public partial class Add_Recipe : ContentPage
     {
-        IBaseRepository _baseRepository;
+        IRecipeRepository _recipeRepository;
 
         Recipe _newRecipe = new Recipe();
 
@@ -17,10 +17,10 @@ namespace CookBookApp
         private bool _ingredientsVisible = true;
         private bool stepsVisible = true;
 
-        public Add_Recipe(IBaseRepository baseRepository)// Konstruktor, który dostaje DbContext z DI
+        public Add_Recipe(IRecipeRepository baseRepository)// Konstruktor, który dostaje DbContext z DI
         {
             InitializeComponent();
-            _baseRepository = baseRepository;
+            _recipeRepository = baseRepository;
         }
 
         // Dodawanie nowego sk³adnika
@@ -442,7 +442,7 @@ namespace CookBookApp
 
 
             // Zapis do bazy danych
-            var result = await _baseRepository.SaveRecipeAsync(newRecipe);
+            var result = await _recipeRepository.SaveRecipeAsync(newRecipe);
 
             if (result)
             {

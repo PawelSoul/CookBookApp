@@ -33,7 +33,7 @@ namespace CookBookApp.Models
         // Relacja do InstructionSteps
         public List<InstructionStep> InstructionSteps { get; set; } = new();
 
-        public List<string>? Tags { get; set; } = new(); // Opcjonalne (można później przemyśleć relację tabeli Tags)
+        //public List<string>? Tags { get; set; } = new(); // Opcjonalne (można później przemyśleć relację tabeli Tags)
 
         public string? ImageUrl { get; set; } // Opcjonalny link do zdjęcia
 

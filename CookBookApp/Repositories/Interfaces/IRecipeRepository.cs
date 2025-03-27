@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CookBookApp.Repositories.Interfaces
 {
-    public interface IBaseRepository
+    public interface IRecipeRepository
     {
         Task<List<Recipe>> FindRecipes(string name);
         Task<bool> SaveRecipeAsync(Recipe recipe);
