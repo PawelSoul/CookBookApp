@@ -39,8 +39,38 @@
         <VerticalStackLayout Padding="20" Spacing="15">
 
             <!-- Nazwa -->
-            <Label Text="Nazwa przepisu:" FontSize="18" FontAttributes="Bold"/>
-            <Entry x:Name="RecipeNameEntry" Placeholder="Wpisz nazwę przepisu" MaxLength="200" BackgroundColor="#3B3533" PlaceholderColor="White"/>
+            <Grid ColumnDefinitions="*, Auto, Auto"
+                  RowDefinitions="Auto, Auto"
+                  ColumnSpacing="20"
+                  RowSpacing="10">
+
+                <!-- Nagłówki -->
+                <Label Text="Nazwa przepisu" FontSize="18" FontAttributes="Bold" Grid.Row="0" Grid.Column="0"/>
+                <Label Text="Czas przygotowania" FontSize="18" FontAttributes="Bold" Grid.Row="0" Grid.Column="1"/>
+                <Label Text="Czas pieczenia" FontSize="18" FontAttributes="Bold" Grid.Row="0" Grid.Column="2"/>
+
+                <!-- Entry -->
+                <Entry x:Name="RecipeNameEntry"
+                       Placeholder="Wpisz nazwę przepisu"
+                       MaxLength="200"
+                       BackgroundColor="#3B3533"
+                       PlaceholderColor="White"
+                       Grid.Row="1" Grid.Column="0"/>
+
+                <Entry x:Name="PrepTimeEntry"
+                       Placeholder="np. 30 min"
+                       BackgroundColor="#3B3533"
+                       PlaceholderColor="White"
+                       WidthRequest="100"
+                       Grid.Row="1" Grid.Column="1"/>
+
+                <Entry x:Name="BakeTimeEntry"
+                       Placeholder="np. 45 min"
+                       BackgroundColor="#3B3533"
+                       PlaceholderColor="White"
+                       WidthRequest="100"
+                       Grid.Row="1" Grid.Column="2"/>
+            </Grid>
 
             <!-- Pickery w ramkach -->
             <Grid ColumnSpacing="30" Padding="0,5">
